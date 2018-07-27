@@ -40,7 +40,7 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
     protected function generateFileContent(PackageContract $package, string $filePath, array $classes, string $type): string
     {
         if (\file_exists($filePath)) {
-            $content = \file_get_contents($filePath);
+            $content = (string) \file_get_contents($filePath);
 
             \unlink($filePath);
         } else {
@@ -51,7 +51,7 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
             $content = $this->doInsertStringBeforePosition(
                 $content,
                 $this->buildClassNamesContent($package, $classes, $type),
-                \mb_strpos($content, '];')
+                (int) \mb_strpos($content, '];')
             );
         }
 

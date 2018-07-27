@@ -92,6 +92,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
 
         $envs = \array_keys($sortedClasses);
 
+        /** @param string[] $contents */
         $contents = [];
 
         foreach ($envs as $env) {
@@ -101,7 +102,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
                 continue;
             }
 
-            $contents[$env] = \file_get_contents($filePath);
+            $contents[$env] = (string) \file_get_contents($filePath);
 
             \unlink($filePath);
         }
@@ -119,9 +120,10 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
         $spaces = \str_repeat(' ', static::$spaceMultiplication);
 
         foreach ($contents as $key => $content) {
-            $content = \str_replace([$spaces . '/** > ' . $package->getName() . " **/\n", $spaces . '/** ' . $package->getName() . " < **/\n"], '', $content);
-
-            $this->dump($this->getConfFile($key), $content);
+            $this->dump(
+                $this->getConfFile((string) $key),
+                \str_replace([$spaces . '/** > ' . $package->getName() . " **/\n", $spaces . '/** ' . $package->getName() . " < **/\n"], '', $content)
+            );
         }
     }
 

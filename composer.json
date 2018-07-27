@@ -21,14 +21,12 @@
         "ext-mbstring": "*"
     },
     "require-dev": {
-        "composer/composer": "^1.6",
+        "composer/composer": "^1.6.0",
         "mockery/mockery": "^1.0.0",
-        "narrowspark/discovery-common": "^0.1",
-        "narrowspark/php-cs-fixer-config": "^2.1.0",
+        "narrowspark/discovery-common": "^0.1.7",
+        "narrowspark/coding-standard": "^1.0.0",
         "narrowspark/testing-helper": "^6.0.0",
-        "phpstan/phpstan": "^0.9.0",
-        "phpstan/phpstan-phpunit": "^0.9.0",
-        "phpunit/phpunit": "^7.0.0"
+        "phpunit/phpunit": "^7.2.0"
     },
     "config": {
         "optimize-autoloader": true,
@@ -51,7 +49,8 @@
     "scripts": {
         "coverage": "phpunit --coverage-html=\"build/logs\"",
         "cs": "php-cs-fixer fix",
-        "phpstan": "phpstan analyse -c phpstan.neon -l 7 src --memory-limit=-1"
+        "phpstan": "phpstan analyse -c phpstan.neon -l 7 src --memory-limit=-1",
+        "test": "phpunit"
     },
     "support": {
         "issues": "https://github.com/narrowspark/configurators/issues",

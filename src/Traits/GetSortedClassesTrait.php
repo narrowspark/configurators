@@ -22,7 +22,7 @@ trait GetSortedClassesTrait
             $class = \mb_strpos($provider, '::class') !== false ? $provider : $provider . '::class';
 
             foreach ($environments as $environment) {
-                $sortedProviders[$environment][$class] = '\\' . \ltrim($class, '\\');
+                $sortedProviders[$environment][$class] = '\\' . \ltrim((string) $class, '\\');
             }
         }
 

@@ -9,7 +9,10 @@ use Narrowspark\Discovery\Common\Traits\PhpFileMarkerTrait;
 use Narrowspark\Discovery\Configurator\ProxyConfigurator;
 use Narrowspark\TestingHelper\Phpunit\MockeryTestCase;
 
-class ProxyConfiguratorTest extends MockeryTestCase
+/**
+ * @internal
+ */
+final class ProxyConfiguratorTest extends MockeryTestCase
 {
     use PhpFileMarkerTrait;
 
@@ -93,11 +96,11 @@ class ProxyConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        self::assertTrue($this->isFileMarked('test', $this->globalPath));
+        static::assertTrue($this->isFileMarked('test', $this->globalPath));
 
         $array = include $this->globalPath;
 
-        self::assertSame(self::class, $array['viserio']['staticalproxy']['aliases']['ProxyConfiguratorTest']);
+        static::assertSame(self::class, $array['viserio']['staticalproxy']['aliases']['ProxyConfiguratorTest']);
     }
 
     public function testConfigureWithGlobalAndLocalProxy(): void
@@ -118,16 +121,16 @@ class ProxyConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        self::assertTrue($this->isFileMarked('test', $this->globalPath));
-        self::assertTrue($this->isFileMarked('test', $this->localPath));
+        static::assertTrue($this->isFileMarked('test', $this->globalPath));
+        static::assertTrue($this->isFileMarked('test', $this->localPath));
 
         $array = include $this->globalPath;
 
-        self::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
+        static::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
 
         $array = include $this->localPath;
 
-        self::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
+        static::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
     }
 
     public function testSkipMarkedFiles(): void
@@ -150,11 +153,11 @@ class ProxyConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        self::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
+        static::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
 
         $this->configurator->configure($package);
 
-        self::assertCount(1, $array['viserio']['staticalproxy']['aliases']);
+        static::assertCount(1, $array['viserio']['staticalproxy']['aliases']);
     }
 
     public function testUpdateExistedFileWithGlobalProxy(): void
@@ -175,11 +178,11 @@ class ProxyConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        self::assertTrue($this->isFileMarked('test', $this->globalPath));
+        static::assertTrue($this->isFileMarked('test', $this->globalPath));
 
         $array = include $this->globalPath;
 
-        self::assertSame(self::class, $array['viserio']['staticalproxy']['aliases']['ProxyConfiguratorTest']);
+        static::assertSame(self::class, $array['viserio']['staticalproxy']['aliases']['ProxyConfiguratorTest']);
 
         $package = new Package(
             'test2',
@@ -197,12 +200,12 @@ class ProxyConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        self::assertTrue($this->isFileMarked('test2', $this->globalPath));
+        static::assertTrue($this->isFileMarked('test2', $this->globalPath));
 
         $array = include $this->globalPath;
 
-        self::assertSame(self::class, $array['viserio']['staticalproxy']['aliases']['ProxyConfiguratorTest']);
-        self::assertSame(Package::class, $array['viserio']['staticalproxy']['aliases']['Package']);
+        static::assertSame(self::class, $array['viserio']['staticalproxy']['aliases']['ProxyConfiguratorTest']);
+        static::assertSame(Package::class, $array['viserio']['staticalproxy']['aliases']['Package']);
     }
 
     public function testUpdateAExistedFileWithGlobalAndLocalProxy(): void
@@ -225,11 +228,11 @@ class ProxyConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        self::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
+        static::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
 
         $array = include $this->localPath;
 
-        self::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
+        static::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
 
         $package = new Package(
             'test2',
@@ -249,13 +252,13 @@ class ProxyConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        self::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
-        self::assertSame(Package::class, \end($array['viserio']['staticalproxy']['aliases']));
+        static::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
+        static::assertSame(Package::class, \end($array['viserio']['staticalproxy']['aliases']));
 
         $array = include $this->localPath;
 
-        self::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
-        self::assertSame(Package::class, \end($array['viserio']['staticalproxy']['aliases']));
+        static::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
+        static::assertSame(Package::class, \end($array['viserio']['staticalproxy']['aliases']));
     }
 
     public function testConfigureWithEmptyProxiesConfig(): void
@@ -275,7 +278,7 @@ class ProxyConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        self::assertFileNotExists($this->globalPath);
+        static::assertFileNotExists($this->globalPath);
     }
 
     public function testUnconfigureWithGlobalProxies(): void
@@ -296,11 +299,11 @@ class ProxyConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        self::assertTrue($this->isFileMarked('test', $this->globalPath));
+        static::assertTrue($this->isFileMarked('test', $this->globalPath));
 
         $this->configurator->unconfigure($package);
 
-        self::assertFalse($this->isFileMarked('test', $this->globalPath));
+        static::assertFalse($this->isFileMarked('test', $this->globalPath));
 
         $package = new Package(
             'test2',
@@ -318,12 +321,12 @@ class ProxyConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        self::assertTrue($this->isFileMarked('test2', $this->globalPath));
+        static::assertTrue($this->isFileMarked('test2', $this->globalPath));
 
         $array = include $this->globalPath;
 
-        self::assertSame(Package::class, \reset($array['viserio']['staticalproxy']['aliases']));
-        self::assertFalse(isset($array['viserio']['staticalproxy']['aliases']['ProxyConfiguratorTest']));
+        static::assertSame(Package::class, \reset($array['viserio']['staticalproxy']['aliases']));
+        static::assertFalse(isset($array['viserio']['staticalproxy']['aliases']['ProxyConfiguratorTest']));
     }
 
     public function testUnconfigureAndConfigureAgain(): void
@@ -350,6 +353,6 @@ class ProxyConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        self::assertCount(1, $array['viserio']['staticalproxy']['aliases']);
+        static::assertCount(1, $array['viserio']['staticalproxy']['aliases']);
     }
 }

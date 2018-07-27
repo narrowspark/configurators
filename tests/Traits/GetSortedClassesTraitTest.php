@@ -6,7 +6,10 @@ use Narrowspark\Discovery\Common\Contract\Package as PackageContract;
 use Narrowspark\Discovery\Configurator\Traits\GetSortedClassesTrait;
 use Narrowspark\TestingHelper\Phpunit\MockeryTestCase;
 
-class GetSortedClassesTraitTest extends MockeryTestCase
+/**
+ * @internal
+ */
+final class GetSortedClassesTraitTest extends MockeryTestCase
 {
     use GetSortedClassesTrait;
 
@@ -23,7 +26,7 @@ class GetSortedClassesTraitTest extends MockeryTestCase
 
         $array = $this->getSortedClasses($package, 'providers');
 
-        self::assertEquals(
+        static::assertEquals(
             [
                 'global' => [
                     self::class . '::class'         => '\\' . self::class . '::class',

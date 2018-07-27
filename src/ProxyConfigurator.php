@@ -45,7 +45,7 @@ class ProxyConfigurator extends AbstractClassConfigurator
     protected function generateFileContent(PackageContract $package, string $filePath, array $classes, string $env): string
     {
         if (\file_exists($filePath)) {
-            $content = \file_get_contents($filePath);
+            $content = (string) \file_get_contents($filePath);
 
             \unlink($filePath);
         } else {
@@ -59,7 +59,7 @@ class ProxyConfigurator extends AbstractClassConfigurator
             $content = $this->doInsertStringBeforePosition(
                 $content,
                 $this->buildClassNamesContent($package, $classes, $env),
-                $endPositionOfAliasesArray
+                (int) $endPositionOfAliasesArray
             );
         }
 
