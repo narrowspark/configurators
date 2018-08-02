@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
-namespace Narrowspark\Discovery\Configurator\Traits;
+namespace Narrowspark\Automatic\Configurator\Traits;
 
-use Narrowspark\Discovery\Common\Contract\Package as PackageContract;
+use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 
 trait GetSortedClassesTrait
 {
     /**
      * Returns a sorted array of given classes, from package extra options.
      *
-     * @param \Narrowspark\Discovery\Common\Contract\Package $package
+     * @param \Narrowspark\Automatic\Common\Contract\Package $package
      * @param string                                         $key
      *
      * @return array

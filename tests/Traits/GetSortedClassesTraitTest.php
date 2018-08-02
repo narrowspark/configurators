@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
-namespace Narrowspark\Discovery\Common\Test;
+namespace Narrowspark\Automatic\Common\Test;
 
-use Narrowspark\Discovery\Common\Contract\Package as PackageContract;
-use Narrowspark\Discovery\Configurator\Traits\GetSortedClassesTrait;
+use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
+use Narrowspark\Automatic\Configurator\Traits\GetSortedClassesTrait;
 use Narrowspark\TestingHelper\Phpunit\MockeryTestCase;
 
 /**
