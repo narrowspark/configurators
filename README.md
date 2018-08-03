@@ -1,4 +1,4 @@
-<h2 align="center">Discovery Narrowspark Framework Configurators</h2>
+<h2 align="center">Automatic Narrowspark Framework Configurators</h2>
 <p align="center">
     <a href="https://github.com/narrowspark/configurators/releases"><img src="https://img.shields.io/packagist/v/narrowspark/configurators.svg?style=flat-square"></a>
     <a href="https://php.net/"><img src="https://img.shields.io/badge/php-%5E7.2.0-8892BF.svg?style=flat-square"></a>
@@ -11,7 +11,7 @@ Installation
 ------------
 
 ```bash
-composer require narrowspark/discovery narrowspark/configurators
+composer require narrowspark/automatic narrowspark/configurators
 ```
 
 Configurators
@@ -29,7 +29,7 @@ This example creates a new `Route` static proxy:
 ```json
 {   
     "extra": {
-        "discovery": {
+        "automatic": {
             "proxies": {
                 "Viserio\\Component\\Routing\\Proxy\\Route": [
                     "global"
@@ -49,7 +49,7 @@ The supported environments are local, prod, testing and global (which enables th
 ```json
 {   
     "extra": {
-        "discovery": {
+        "automatic": {
             "providers": {
                 "Viserio\\Component\\Routing\\Provider\\RoutingServiceProvider": [
                     "global"

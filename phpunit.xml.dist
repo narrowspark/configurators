@@ -15,7 +15,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="Discovery Configurator Tests">
+        <testsuite name="Automatic Configurator Tests">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
