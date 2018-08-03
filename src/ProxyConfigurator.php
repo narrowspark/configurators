@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
-namespace Narrowspark\Discovery\Configurator;
+namespace Narrowspark\Automatic\Configurator;
 
-use Narrowspark\Discovery\Common\Contract\Package as PackageContract;
+use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 
 class ProxyConfigurator extends AbstractClassConfigurator
 {
@@ -81,7 +81,7 @@ class ProxyConfigurator extends AbstractClassConfigurator
     /**
      * Builds a array value with class names.
      *
-     * @param \Narrowspark\Discovery\Common\Contract\Package $package
+     * @param \Narrowspark\Automatic\Common\Contract\Package $package
      * @param array                                          $classes
      * @param string                                         $env
      *

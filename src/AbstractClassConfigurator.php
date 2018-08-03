@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
-namespace Narrowspark\Discovery\Configurator;
+namespace Narrowspark\Automatic\Configurator;
 
-use Narrowspark\Discovery\Common\Configurator\AbstractConfigurator;
-use Narrowspark\Discovery\Common\Contract\Package as PackageContract;
-use Narrowspark\Discovery\Common\Traits\PhpFileMarkerTrait;
-use Narrowspark\Discovery\Configurator\Traits\GetSortedClassesTrait;
+use Narrowspark\Automatic\Common\Configurator\AbstractConfigurator;
+use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
+use Narrowspark\Automatic\Common\Traits\PhpFileMarkerTrait;
+use Narrowspark\Automatic\Configurator\Traits\GetSortedClassesTrait;
 
 /**
  * @internal
@@ -163,7 +163,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
     /**
      * Generate file content.
      *
-     * @param \Narrowspark\Discovery\Common\Contract\Package $package
+     * @param \Narrowspark\Automatic\Common\Contract\Package $package
      * @param string                                         $filePath
      * @param array                                          $classes
      * @param string                                         $env

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
-namespace Narrowspark\Discovery\Test\Configurator;
+namespace Narrowspark\Automatic\Test\Configurator;
 
 use Composer\Composer;
 use Composer\IO\NullIO;
-use Narrowspark\Discovery\Common\Package;
-use Narrowspark\Discovery\Common\Traits\PhpFileMarkerTrait;
-use Narrowspark\Discovery\Configurator\ProxyConfigurator;
+use Narrowspark\Automatic\Common\Package;
+use Narrowspark\Automatic\Common\Traits\PhpFileMarkerTrait;
+use Narrowspark\Automatic\Configurator\ProxyConfigurator;
 use Narrowspark\TestingHelper\Phpunit\MockeryTestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ProxyConfiguratorTest extends MockeryTestCase
     private $nullIo;
 
     /**
-     * @var \Narrowspark\Discovery\Configurator\ProxyConfigurator
+     * @var \Narrowspark\Automatic\Configurator\ProxyConfigurator
      */
     private $configurator;
 
