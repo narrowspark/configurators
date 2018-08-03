@@ -6,7 +6,7 @@ use ChangelogGenerator\ChangelogConfig;
 return [
     (new ChangelogConfig(
         'narrowspark',
-        'automatic',
+        'configurators',
         'v0.2.0',
         ['Added', 'Changed', 'Deprecated', 'Removed', 'Fixed', 'Security']
     ))
