@@ -80,19 +80,12 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
     public function testConfigureWithGlobalProxy(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'proxies'   => [
-                    self::class => ['global'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'proxies'   => [
+                self::class => ['global'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -105,19 +98,12 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
     public function testConfigureWithGlobalAndLocalProxy(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'proxies'   => [
-                    self::class => ['global', 'local'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'proxies'   => [
+                self::class => ['global', 'local'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -135,19 +121,12 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
     public function testSkipMarkedFiles(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'proxies'   => [
-                    self::class => ['global'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'proxies'   => [
+                self::class => ['global'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -162,19 +141,12 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
     public function testUpdateExistedFileWithGlobalProxy(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'proxies'   => [
-                    self::class => ['global'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'proxies'   => [
+                self::class => ['global'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -184,19 +156,12 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
         static::assertSame(self::class, $array['viserio']['staticalproxy']['aliases']['ProxyConfiguratorTest']);
 
-        $package = new Package(
-            'test2',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'proxies'   => [
-                    Package::class => ['global'],
-                ],
-            ]
-        );
+        $package = new Package('test2', '^1.0.0');
+        $package->setConfig([
+            'proxies'   => [
+                Package::class => ['global'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -210,19 +175,12 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
     public function testUpdateAExistedFileWithGlobalAndLocalProxy(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'proxies'   => [
-                    self::class => ['global', 'local'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'proxies'   => [
+                self::class => ['global', 'local'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -234,19 +192,12 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
         static::assertSame(self::class, \reset($array['viserio']['staticalproxy']['aliases']));
 
-        $package = new Package(
-            'test2',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'proxies'   => [
-                    Package::class => ['global', 'local'],
-                ],
-            ]
-        );
+        $package = new Package('test2', '^1.0.0');
+        $package->setConfig([
+            'proxies'   => [
+                Package::class => ['global', 'local'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -263,18 +214,11 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
     public function testConfigureWithEmptyProxiesConfig(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'proxies'   => [
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'proxies'   => [
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -283,19 +227,12 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
     public function testUnconfigureWithGlobalProxies(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'proxies'   => [
-                    self::class => ['global'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'proxies'   => [
+                self::class => ['global'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -305,19 +242,12 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
         static::assertFalse($this->isFileMarked('test', $this->globalPath));
 
-        $package = new Package(
-            'test2',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'proxies'   => [
-                    Package::class => ['global'],
-                ],
-            ]
-        );
+        $package = new Package('test2', '^1.0.0');
+        $package->setConfig([
+            'proxies'   => [
+                Package::class => ['global'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -331,20 +261,13 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
     public function testUnconfigureAndConfigureAgain(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'proxies'   => [
-                    self::class    => ['global'],
-                    Package::class => ['local'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'proxies'   => [
+                self::class    => ['global'],
+                Package::class => ['local'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
         $this->configurator->unconfigure($package);

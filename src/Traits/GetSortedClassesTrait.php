@@ -18,7 +18,7 @@ trait GetSortedClassesTrait
     {
         $sortedProviders = [];
 
-        foreach ($package->getConfiguratorOptions($key) as $provider => $environments) {
+        foreach ((array) $package->getConfig($key) as $provider => $environments) {
             $class = \mb_strpos($provider, '::class') !== false ? $provider : $provider . '::class';
 
             foreach ($environments as $environment) {

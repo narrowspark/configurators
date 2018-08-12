@@ -80,19 +80,12 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
     public function testConfigureWithGlobalProvider(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'providers' => [
-                    self::class => ['global'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'providers' => [
+                self::class => ['global'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -105,19 +98,12 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
     public function testConfigureWithGlobalAndLocalProvider(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'providers' => [
-                    self::class => ['global', 'local'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'providers' => [
+                self::class => ['global', 'local'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -135,19 +121,12 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
     public function testSkipMarkedFiles(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'providers' => [
-                    self::class => ['global'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'providers' => [
+                self::class => ['global'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -162,19 +141,12 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
     public function testUpdateAExistedFileWithGlobalProvider(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'providers' => [
-                    self::class => ['global'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'providers' => [
+                self::class => ['global'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -182,19 +154,12 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         static::assertSame(self::class, $array[0]);
 
-        $package = new Package(
-            'test2',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'providers' => [
-                    Package::class => ['global'],
-                ],
-            ]
-        );
+        $package = new Package('test2', '^1.0.0');
+        $package->setConfig([
+            'providers' => [
+                Package::class => ['global'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -206,19 +171,12 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
     public function testUpdateAExistedFileWithGlobalAndLocalProvider(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'providers' => [
-                    self::class => ['global', 'local'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'providers' => [
+                self::class => ['global', 'local'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -230,19 +188,12 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         static::assertSame(self::class, $array[0]);
 
-        $package = new Package(
-            'test2',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'providers' => [
-                    Package::class => ['global', 'local'],
-                ],
-            ]
-        );
+        $package = new Package('test2', '^1.0.0');
+        $package->setConfig([
+            'providers' => [
+                Package::class => ['global', 'local'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -259,18 +210,11 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
     public function testConfigureWithEmptyProvidersConfig(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'providers' => [
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'providers' => [
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -323,36 +267,22 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
     public function testUnconfigureWithGlobalProviders(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'providers' => [
-                    self::class => ['global'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'providers' => [
+                self::class => ['global'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
         $this->configurator->unconfigure($package);
 
-        $package = new Package(
-            'test2',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'providers' => [
-                    Package::class => ['global'],
-                ],
-            ]
-        );
+        $package = new Package('test2', '^1.0.0');
+        $package->setConfig([
+            'providers' => [
+                Package::class => ['global'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
 
@@ -364,20 +294,13 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
     public function testUnconfigureAndConfigureAgain(): void
     {
-        $package = new Package(
-            'test',
-            __DIR__,
-            [
-                'version'   => '1',
-                'url'       => 'example.local',
-                'type'      => 'library',
-                'operation' => 'i',
-                'providers' => [
-                    self::class    => ['global'],
-                    Package::class => ['local'],
-                ],
-            ]
-        );
+        $package = new Package('test', '^1.0.0');
+        $package->setConfig([
+            'providers' => [
+                self::class    => ['global'],
+                Package::class => ['local'],
+            ],
+        ]);
 
         $this->configurator->configure($package);
         $this->configurator->unconfigure($package);
