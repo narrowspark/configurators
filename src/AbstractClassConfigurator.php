@@ -157,7 +157,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
     {
         $type = $type === 'global' ? '' : $type;
 
-        return self::expandTargetDir($this->options, '%CONFIG_DIR%/' . $type . '/' . static::$configFileName . '.php');
+        return self::expandTargetDir($this->options, '%CONFIG_DIR%' . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR . static::$configFileName . '.php');
     }
 
     /**

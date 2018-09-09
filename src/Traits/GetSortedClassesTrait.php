@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Narrowspark\Automatic\Configurator\Traits;
 
+use Narrowspark\Automatic\Common\Contract\Configurator as ConfiguratorContract;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 
 trait GetSortedClassesTrait
@@ -18,7 +19,7 @@ trait GetSortedClassesTrait
     {
         $sortedProviders = [];
 
-        foreach ((array) $package->getConfig($key) as $provider => $environments) {
+        foreach ((array) $package->getConfig(ConfiguratorContract::TYPE, $key) as $provider => $environments) {
             $class = \mb_strpos($provider, '::class') !== false ? $provider : $provider . '::class';
 
             foreach ($environments as $environment) {
