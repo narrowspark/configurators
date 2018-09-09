@@ -37,8 +37,12 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
     /**
      * {@inheritdoc}
      */
-    protected function generateFileContent(PackageContract $package, string $filePath, array $classes, string $type): string
-    {
+    protected function generateFileContent(
+        PackageContract $package,
+        string $filePath,
+        array $classes,
+        string $type
+    ): string {
         if (\file_exists($filePath)) {
             $content = (string) \file_get_contents($filePath);
 

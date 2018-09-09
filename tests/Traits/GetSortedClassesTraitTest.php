@@ -18,7 +18,7 @@ final class GetSortedClassesTraitTest extends MockeryTestCase
         $package = $this->mock(PackageContract::class);
         $package->shouldReceive('getConfig')
             ->once()
-            ->with('providers')
+            ->with('configurators', 'providers')
             ->andReturn([
                 self::class         => ['global'],
                 Configurator::class => ['global', 'test'],
