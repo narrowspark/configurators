@@ -82,8 +82,10 @@ final class ProxyConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'proxies'   => [
-                self::class => ['global'],
+            'configurators' => [
+                'proxies'   => [
+                    self::class => ['global'],
+                ],
             ],
         ]);
 
@@ -100,8 +102,10 @@ final class ProxyConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'proxies'   => [
-                self::class => ['global', 'local'],
+            'configurators' => [
+                'proxies'   => [
+                    self::class => ['global', 'local'],
+                ],
             ],
         ]);
 
@@ -123,8 +127,10 @@ final class ProxyConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'proxies'   => [
-                self::class => ['global'],
+            'configurators' => [
+                'proxies'   => [
+                    self::class => ['global'],
+                ],
             ],
         ]);
 
@@ -143,8 +149,10 @@ final class ProxyConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'proxies'   => [
-                self::class => ['global'],
+            'configurators' => [
+                'proxies'   => [
+                    self::class => ['global'],
+                ],
             ],
         ]);
 
@@ -158,8 +166,10 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
         $package = new Package('test2', '^1.0.0');
         $package->setConfig([
-            'proxies'   => [
-                Package::class => ['global'],
+            'configurators' => [
+                'proxies'   => [
+                    Package::class => ['global'],
+                ],
             ],
         ]);
 
@@ -177,8 +187,10 @@ final class ProxyConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'proxies'   => [
-                self::class => ['global', 'local'],
+            'configurators' => [
+                'proxies'   => [
+                    self::class => ['global', 'local'],
+                ],
             ],
         ]);
 
@@ -194,8 +206,10 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
         $package = new Package('test2', '^1.0.0');
         $package->setConfig([
-            'proxies'   => [
-                Package::class => ['global', 'local'],
+            'configurators' => [
+                'proxies'   => [
+                    Package::class => ['global', 'local'],
+                ],
             ],
         ]);
 
@@ -216,7 +230,9 @@ final class ProxyConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'proxies'   => [
+            'configurators' => [
+                'proxies'   => [
+                ],
             ],
         ]);
 
@@ -229,8 +245,10 @@ final class ProxyConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'proxies'   => [
-                self::class => ['global'],
+            'configurators' => [
+                'proxies'   => [
+                    self::class => ['global'],
+                ],
             ],
         ]);
 
@@ -244,8 +262,10 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
         $package = new Package('test2', '^1.0.0');
         $package->setConfig([
-            'proxies'   => [
-                Package::class => ['global'],
+            'configurators' => [
+                'proxies'   => [
+                    Package::class => ['global'],
+                ],
             ],
         ]);
 
@@ -263,9 +283,11 @@ final class ProxyConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'proxies'   => [
-                self::class    => ['global'],
-                Package::class => ['local'],
+            'configurators' => [
+                'proxies'   => [
+                    self::class    => ['global'],
+                    Package::class => ['local'],
+                ],
             ],
         ]);
 

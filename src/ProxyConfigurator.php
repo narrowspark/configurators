@@ -42,8 +42,12 @@ class ProxyConfigurator extends AbstractClassConfigurator
     /**
      * {@inheritdoc}
      */
-    protected function generateFileContent(PackageContract $package, string $filePath, array $classes, string $env): string
-    {
+    protected function generateFileContent(
+        PackageContract $package,
+        string $filePath,
+        array $classes,
+        string $env
+    ): string {
         if (\file_exists($filePath)) {
             $content = (string) \file_get_contents($filePath);
 

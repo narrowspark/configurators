@@ -82,8 +82,10 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'providers' => [
-                self::class => ['global'],
+            'configurators' => [
+                'providers' => [
+                    self::class => ['global'],
+                ],
             ],
         ]);
 
@@ -100,8 +102,10 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'providers' => [
-                self::class => ['global', 'local'],
+            'configurators' => [
+                'providers' => [
+                    self::class => ['global', 'local'],
+                ],
             ],
         ]);
 
@@ -123,8 +127,10 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'providers' => [
-                self::class => ['global'],
+            'configurators' => [
+                'providers' => [
+                    self::class => ['global'],
+                ],
             ],
         ]);
 
@@ -143,8 +149,10 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'providers' => [
-                self::class => ['global'],
+            'configurators' => [
+                'providers' => [
+                    self::class => ['global'],
+                ],
             ],
         ]);
 
@@ -156,8 +164,10 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $package = new Package('test2', '^1.0.0');
         $package->setConfig([
-            'providers' => [
-                Package::class => ['global'],
+            'configurators' => [
+                'providers' => [
+                    Package::class => ['global'],
+                ],
             ],
         ]);
 
@@ -173,8 +183,10 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'providers' => [
-                self::class => ['global', 'local'],
+            'configurators' => [
+                'providers' => [
+                    self::class => ['global', 'local'],
+                ],
             ],
         ]);
 
@@ -190,8 +202,10 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $package = new Package('test2', '^1.0.0');
         $package->setConfig([
-            'providers' => [
-                Package::class => ['global', 'local'],
+            'configurators' => [
+                'providers' => [
+                    Package::class => ['global', 'local'],
+                ],
             ],
         ]);
 
@@ -212,7 +226,9 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'providers' => [
+            'configurators' => [
+                'providers' => [
+                ],
             ],
         ]);
 
@@ -269,8 +285,10 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'providers' => [
-                self::class => ['global'],
+            'configurators' => [
+                'providers' => [
+                    self::class => ['global'],
+                ],
             ],
         ]);
 
@@ -279,8 +297,10 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $package = new Package('test2', '^1.0.0');
         $package->setConfig([
-            'providers' => [
-                Package::class => ['global'],
+            'configurators' => [
+                'providers' => [
+                    Package::class => ['global'],
+                ],
             ],
         ]);
 
@@ -296,9 +316,11 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
     {
         $package = new Package('test', '^1.0.0');
         $package->setConfig([
-            'providers' => [
-                self::class    => ['global'],
-                Package::class => ['local'],
+            'configurators' => [
+                'providers' => [
+                    self::class    => ['global'],
+                    Package::class => ['local'],
+                ],
             ],
         ]);
 

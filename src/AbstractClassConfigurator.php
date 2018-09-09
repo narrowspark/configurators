@@ -157,7 +157,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
     {
         $type = $type === 'global' ? '' : $type;
 
-        return self::expandTargetDir($this->options, '%CONFIG_DIR%' . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR . static::$configFileName . '.php');
+        return self::expandTargetDir($this->options, '%CONFIG_DIR%' . \DIRECTORY_SEPARATOR . $type . \DIRECTORY_SEPARATOR . static::$configFileName . '.php');
     }
 
     /**
@@ -170,7 +170,12 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
      *
      * @return string
      */
-    abstract protected function generateFileContent(PackageContract $package, string $filePath, array $classes, string $env): string;
+    abstract protected function generateFileContent(
+        PackageContract $package,
+        string $filePath,
+        array $classes,
+        string $env
+    ): string;
 
     /**
      * Replace a string in content.
