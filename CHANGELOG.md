@@ -1,3 +1,13 @@
+## v0.4.0
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
+
+### Changed
+
+ - [4: upgraded automatic-common to v0.6.0](https://github.com/narrowspark/configurators/pull/4) thanks to @prisis
+
 ## v0.3.0
 
 - Total issues resolved: **1**
