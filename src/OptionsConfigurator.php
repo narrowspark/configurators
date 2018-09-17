@@ -3,9 +3,8 @@ declare(strict_types=1);
 namespace Narrowspark\Automatic\Configurator;
 
 use Composer\IO\IOInterface;
-use Symfony\Component\VarExporter\VarExporter;
-use Narrowspark\Automatic\Common\Contract\Configurator as ConfiguratorContract;
 use Narrowspark\Automatic\Common\Configurator\AbstractConfigurator;
+use Narrowspark\Automatic\Common\Contract\Configurator as ConfiguratorContract;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 use Narrowspark\Automatic\Configurator\Traits\DumpTrait;
 
@@ -71,7 +70,10 @@ final class OptionsConfigurator extends AbstractConfigurator
         foreach ($data as $key => $value) {
             if (! \is_int($key)) {
                 if ($this->isClass($key)) {
-                    $key = $this->resolverCallbacks['class']($key);
+                    $class = \str_replace('\\\\', '\\', $key);
+                    $class = \sprintf('%s::class', $class);
+
+                    $key = \mb_strpos($class, '\\') === 0 ? $class : '\\' . $class;
                 } else {
                     $key = \sprintf("'%s'", $key);
                 }
@@ -136,15 +138,14 @@ final class OptionsConfigurator extends AbstractConfigurator
     }
 
     /**
-     *
      * @param \Narrowspark\Automatic\Common\Contract\Package $package
      *
      * @return string
      */
     private function getConfigFilePath(PackageContract $package): string
     {
-        $explode = explode('/', $package->getName());
+        $explode = \explode('/', $package->getName());
 
-        return $this->expandTargetDir($this->options, '%CONFIG_DIR%' . DIRECTORY_SEPARATOR . 'packages' . DIRECTORY_SEPARATOR . end($explode)) . '.php';
+        return self::expandTargetDir($this->options, '%CONFIG_DIR%' . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . \end($explode) . '.php');
     }
 }
