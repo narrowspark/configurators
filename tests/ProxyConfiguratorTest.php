@@ -78,6 +78,11 @@ final class ProxyConfiguratorTest extends MockeryTestCase
         @\rmdir(__DIR__ . '/ProxyConfiguratorTest');
     }
 
+    public function testGetName(): void
+    {
+        static::assertSame('proxies', ProxyConfigurator::getName());
+    }
+
     public function testConfigureWithGlobalProxy(): void
     {
         $package = new Package('test', '^1.0.0');
