@@ -48,11 +48,6 @@ final class OptionsConfiguratorTest extends MockeryTestCase
         $this->configurator = new OptionsConfigurator($this->composer, $this->ioMock, ['config-dir' => $this->dir]);
     }
 
-    public function testGetName(): void
-    {
-        static::assertSame('options', OptionsConfigurator::getName());
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -60,8 +55,13 @@ final class OptionsConfiguratorTest extends MockeryTestCase
     {
         parent::tearDown();
 
-        @\rmdir($this->dir . DIRECTORY_SEPARATOR . 'packages');
+        @\rmdir($this->dir . \DIRECTORY_SEPARATOR . 'packages');
         @\rmdir($this->dir);
+    }
+
+    public function testGetName(): void
+    {
+        static::assertSame('options', OptionsConfigurator::getName());
     }
 
     public function testConfigure(): void
@@ -72,7 +72,7 @@ final class OptionsConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($this->arrangePackage());
 
-        $filePath = $this->dir . DIRECTORY_SEPARATOR . 'packages' . DIRECTORY_SEPARATOR . 'bar.php';
+        $filePath = $this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'bar.php';
 
         static::assertFileExists($filePath);
 
@@ -81,13 +81,13 @@ final class OptionsConfiguratorTest extends MockeryTestCase
         static::assertSame(
             $config,
             [
-                'test' => 'foo',
+                'test'  => 'foo',
                 'multi' => [
-                    'test' => 'bar',
-                    'class' => self::class
+                    'test'  => 'bar',
+                    'class' => self::class,
                 ],
-                'class' => self::class,
-                self::class => true
+                'class'     => self::class,
+                self::class => true,
             ]
         );
     }
@@ -119,7 +119,7 @@ final class OptionsConfiguratorTest extends MockeryTestCase
 
         $this->configurator->unconfigure($this->arrangePackage());
 
-        $filePath = $this->dir . DIRECTORY_SEPARATOR . 'packages' . DIRECTORY_SEPARATOR . 'bar.php';
+        $filePath = $this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'bar.php';
 
         static::assertFileNotExists($filePath);
     }
@@ -143,13 +143,13 @@ final class OptionsConfiguratorTest extends MockeryTestCase
         $package->setConfig([
             'configurators' => [
                 'options' => [
-                    'test' => 'foo',
+                    'test'  => 'foo',
                     'multi' => [
-                        'test' => 'bar',
-                        'class' => self::class
+                        'test'  => 'bar',
+                        'class' => self::class,
                     ],
-                    'class' => self::class,
-                    self::class => true
+                    'class'     => self::class,
+                    self::class => true,
                 ],
             ],
         ]);
