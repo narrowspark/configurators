@@ -17,7 +17,7 @@ composer require narrowspark/automatic narrowspark/configurators
 Configurators
 -------------
 There are several types of tasks, which are called **configurators**:
-`proxies` and `providers`.
+`proxies`, `options` and `providers`.
 
 `proxies` Configurator
 
@@ -79,6 +79,28 @@ return [
     \Viserio\Component\Routing\Provider\RoutingDataCollectorServiceProvider::class,
     /** viserio/routing < **/
 ];
+```
+
+`options` Configurator
+
+Adds new config files to the `config` folder provided from your root composer.json `config-dir` name.
+
+This example creates a new `view` config:
+
+```json
+{   
+    "extra": {
+        "automatic": {
+            "options": {
+                "viserio": {
+                    "view": {
+                        "paths": null
+                    }
+                }
+            }
+        }
+    }
+}
 ```
 
 Contributing
