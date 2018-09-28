@@ -4,7 +4,7 @@ namespace Narrowspark\Automatic\Configurator;
 
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 
-class ProxyConfigurator extends AbstractClassConfigurator
+final class ProxyConfigurator extends AbstractClassConfigurator
 {
     /**
      * {@inheritdoc}

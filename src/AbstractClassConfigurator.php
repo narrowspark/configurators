@@ -5,6 +5,7 @@ namespace Narrowspark\Automatic\Configurator;
 use Narrowspark\Automatic\Common\Configurator\AbstractConfigurator;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 use Narrowspark\Automatic\Common\Traits\PhpFileMarkerTrait;
+use Narrowspark\Automatic\Configurator\Traits\DumpTrait;
 use Narrowspark\Automatic\Configurator\Traits\GetSortedClassesTrait;
 
 /**
@@ -12,6 +13,7 @@ use Narrowspark\Automatic\Configurator\Traits\GetSortedClassesTrait;
  */
 abstract class AbstractClassConfigurator extends AbstractConfigurator
 {
+    use DumpTrait;
     use PhpFileMarkerTrait;
     use GetSortedClassesTrait;
 
@@ -125,25 +127,6 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
                 \str_replace([$spaces . '/** > ' . $package->getName() . " **/\n", $spaces . '/** ' . $package->getName() . " < **/\n"], '', $content)
             );
         }
-    }
-
-    /**
-     * Dump file content.
-     *
-     * @param string $filePath
-     * @param string $content
-     *
-     * @return void
-     */
-    protected function dump(string $filePath, string $content): void
-    {
-        $this->filesystem->dumpFile($filePath, $content);
-
-        // @codeCoverageIgnoreStart
-        if (\function_exists('opcache_invalidate')) {
-            \opcache_invalidate($filePath);
-        }
-        // @codeCoverageIgnoreEnd
     }
 
     /**

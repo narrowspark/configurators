@@ -78,6 +78,11 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
         @\rmdir(__DIR__ . '/ServiceProviderConfiguratorTest');
     }
 
+    public function testGetName(): void
+    {
+        static::assertSame('providers', ServiceProviderConfigurator::getName());
+    }
+
     public function testConfigureWithGlobalProvider(): void
     {
         $package = new Package('test', '^1.0.0');
