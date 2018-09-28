@@ -1,3 +1,13 @@
+## v0.5.0
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
+
+### Added
+
+ - [5: Adding new options configurator](https://github.com/narrowspark/configurators/pull/5) thanks to @prisis
+
 ## v0.4.0
 
 - Total issues resolved: **0**
