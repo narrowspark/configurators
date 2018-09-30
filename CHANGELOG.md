@@ -1,3 +1,13 @@
+## v0.5.1
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
+
+### Added
+
+ - [7: added second level message output](https://github.com/narrowspark/configurators/pull/7) thanks to @prisis
+
 ## v0.5.0
 
 - Total issues resolved: **0**
