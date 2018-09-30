@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace Narrowspark\Automatic\Test\Configurator;
 
 use Composer\Composer;
-use Composer\IO\NullIO;
+use Composer\IO\IOInterface;
 use Narrowspark\Automatic\Common\Package;
 use Narrowspark\Automatic\Common\Traits\PhpFileMarkerTrait;
 use Narrowspark\Automatic\Configurator\ServiceProviderConfigurator;
@@ -22,9 +22,9 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
     private $composer;
 
     /**
-     * @var \Composer\IO\NullIo
+     * @var \Composer\IO\IOInterface|\Mockery\MockInterface
      */
-    private $nullIo;
+    private $ioMock;
 
     /**
      * @var \Narrowspark\Automatic\Configurator\ServiceProviderConfigurator
@@ -49,14 +49,14 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
         parent::setUp();
 
         $this->composer = new Composer();
-        $this->nullIo   = new NullIO();
+        $this->ioMock   = $this->mock(IOInterface::class);
 
         $dir = __DIR__ . '/ServiceProviderConfiguratorTest';
 
         $this->globalPath = $dir . '/serviceproviders.php';
         $this->localPath  = $dir . '/local/serviceproviders.php';
 
-        $this->configurator = new ServiceProviderConfigurator($this->composer, $this->nullIo, ['config-dir' => $dir]);
+        $this->configurator = new ServiceProviderConfigurator($this->composer, $this->ioMock, ['config-dir' => $dir]);
     }
 
     /**
@@ -94,6 +94,13 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
             ],
         ]);
 
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Enabling the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('        - Enabling [\Narrowspark\Automatic\Test\Configurator\ServiceProviderConfiguratorTest::class] as a global service provider.', true, IOInterface::VERBOSE);
+
         $this->configurator->configure($package);
 
         static::assertTrue($this->isFileMarked('test', $this->globalPath));
@@ -113,6 +120,16 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
                 ],
             ],
         ]);
+
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Enabling the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('        - Enabling [\Narrowspark\Automatic\Test\Configurator\ServiceProviderConfiguratorTest::class] as a global service provider.', true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('        - Enabling [\Narrowspark\Automatic\Test\Configurator\ServiceProviderConfiguratorTest::class] as a local service provider.', true, IOInterface::VERBOSE);
 
         $this->configurator->configure($package);
 
@@ -139,6 +156,13 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
             ],
         ]);
 
+        $this->ioMock->shouldReceive('writeError')
+            ->twice()
+            ->with(['    - Enabling the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('        - Enabling [\Narrowspark\Automatic\Test\Configurator\ServiceProviderConfiguratorTest::class] as a global service provider.', true, IOInterface::VERBOSE);
+
         $this->configurator->configure($package);
 
         $array = include $this->globalPath;
@@ -161,6 +185,13 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
             ],
         ]);
 
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Enabling the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('        - Enabling [\Narrowspark\Automatic\Test\Configurator\ServiceProviderConfiguratorTest::class] as a global service provider.', true, IOInterface::VERBOSE);
+
         $this->configurator->configure($package);
 
         $array = include $this->globalPath;
@@ -175,6 +206,13 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
                 ],
             ],
         ]);
+
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Enabling the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('        - Enabling [\Narrowspark\Automatic\Common\Package::class] as a global service provider.', true, IOInterface::VERBOSE);
 
         $this->configurator->configure($package);
 
@@ -195,6 +233,16 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
             ],
         ]);
 
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Enabling the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('        - Enabling [\Narrowspark\Automatic\Test\Configurator\ServiceProviderConfiguratorTest::class] as a global service provider.', true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('        - Enabling [\Narrowspark\Automatic\Test\Configurator\ServiceProviderConfiguratorTest::class] as a local service provider.', true, IOInterface::VERBOSE);
+
         $this->configurator->configure($package);
 
         $array = include $this->globalPath;
@@ -213,6 +261,16 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
                 ],
             ],
         ]);
+
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Enabling the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('        - Enabling [\Narrowspark\Automatic\Common\Package::class] as a global service provider.', true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('        - Enabling [\Narrowspark\Automatic\Common\Package::class] as a local service provider.', true, IOInterface::VERBOSE);
 
         $this->configurator->configure($package);
 
@@ -236,6 +294,10 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
                 ],
             ],
         ]);
+
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Enabling the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
 
         $this->configurator->configure($package);
 
@@ -297,7 +359,19 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
             ],
         ]);
 
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Enabling the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('        - Enabling [\Narrowspark\Automatic\Test\Configurator\ServiceProviderConfiguratorTest::class] as a global service provider.', true, IOInterface::VERBOSE);
+
         $this->configurator->configure($package);
+
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Disable the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+
         $this->configurator->unconfigure($package);
 
         $package = new Package('test2', '^1.0.0');
@@ -308,6 +382,13 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
                 ],
             ],
         ]);
+
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Enabling the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('        - Enabling [\Narrowspark\Automatic\Common\Package::class] as a global service provider.', true, IOInterface::VERBOSE);
 
         $this->configurator->configure($package);
 
@@ -329,7 +410,22 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
             ],
         ]);
 
+        $this->ioMock->shouldReceive('writeError')
+            ->twice()
+            ->with(['    - Enabling the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->twice()
+            ->with('        - Enabling [\Narrowspark\Automatic\Test\Configurator\ServiceProviderConfiguratorTest::class] as a global service provider.', true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->twice()
+            ->with('        - Enabling [\Narrowspark\Automatic\Common\Package::class] as a local service provider.', true, IOInterface::VERBOSE);
+
         $this->configurator->configure($package);
+
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Disable the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+
         $this->configurator->unconfigure($package);
 
         $this->configurator->configure($package);
@@ -337,5 +433,13 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
         $array = include $this->globalPath;
 
         static::assertFalse(isset($array[0], $array[1]));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function allowMockingNonExistentMethods($allow = false): void
+    {
+        parent::allowMockingNonExistentMethods(true);
     }
 }

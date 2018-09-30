@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Narrowspark\Automatic\Configurator;
 
+use Composer\IO\IOInterface;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 
 final class ProxyConfigurator extends AbstractClassConfigurator
@@ -102,7 +103,7 @@ final class ProxyConfigurator extends AbstractClassConfigurator
 
             $content .= $spaces . '\'' . \str_replace('::class', '', $className) . '\' => ' . $class . ",\n";
 
-            $this->write(\sprintf('Enabling [%s] as a %s proxy.', $class, $env));
+            $this->io->writeError(\sprintf('        - Enabling [%s] as a %s proxy.', $class, $env), true, IOInterface::VERBOSE);
         }
 
         return $this->markData($package->getName(), $content, 16);
