@@ -103,7 +103,7 @@ final class ProxyConfigurator extends AbstractClassConfigurator
 
             $content .= $spaces . '\'' . \str_replace('::class', '', $className) . '\' => ' . $class . ",\n";
 
-            $this->io->writeError(\sprintf('        - Enabling [%s] as a %s proxy.', $class, $env), true, IOInterface::VERBOSE);
+            $this->io->writeError(\sprintf('        - Enabling [%s] as a %s proxy.', $class, $env), true, IOInterface::DEBUG);
         }
 
         return $this->markData($package->getName(), $content, 16);
