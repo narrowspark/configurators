@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Narrowspark\Automatic\Configurator;
 
+use Composer\IO\IOInterface;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 
 final class ServiceProviderConfigurator extends AbstractClassConfigurator
@@ -86,7 +87,7 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
         foreach ($classes as $class) {
             $content .= '    ' . $class . ",\n";
 
-            $this->write(\sprintf('Enabling [%s] as a %s service provider.', $class, $type));
+            $this->io->write(\sprintf('        - Enabling [%s] as a %s service provider.', $class, $type), true, IOInterface::VERBOSE);
         }
 
         return $this->markData($package->getName(), $content);
