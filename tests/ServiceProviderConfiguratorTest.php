@@ -66,15 +66,9 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
     {
         parent::tearDown();
 
-        if (\is_file($this->globalPath)) {
-            \unlink($this->globalPath);
-        }
-
-        if (\is_file($this->localPath)) {
-            \unlink($this->localPath);
-            \rmdir(\dirname($this->localPath));
-        }
-
+        @\unlink($this->globalPath);
+        @\unlink($this->localPath);
+        @\rmdir(\dirname($this->localPath));
         @\rmdir(__DIR__ . '/ServiceProviderConfiguratorTest');
     }
 

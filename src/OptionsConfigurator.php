@@ -30,7 +30,7 @@ final class OptionsConfigurator extends AbstractConfigurator
         $options = (array) $package->getConfig(ConfiguratorContract::TYPE, self::getName());
 
         if (\count($options) === 0) {
-            $this->io->write('      - No configuration was found', true, IOInterface::VERBOSE);
+            $this->io->writeError('      - No configuration was found', true, IOInterface::VERY_VERBOSE);
 
             return;
         }

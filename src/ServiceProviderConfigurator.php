@@ -3,9 +3,12 @@ declare(strict_types=1);
 namespace Narrowspark\Automatic\Configurator;
 
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
+use Narrowspark\Automatic\Configurator\Traits\GetSortedClassesTrait;
 
 final class ServiceProviderConfigurator extends AbstractClassConfigurator
 {
+    use GetSortedClassesTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -29,14 +32,6 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
     /**
      * {@inheritdoc}
      */
-    public static function getName(): string
-    {
-        return 'providers';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function generateFileContent(
         PackageContract $package,
         string $filePath,
@@ -48,7 +43,7 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
 
             \unlink($filePath);
         } else {
-            $content = "<?php\ndeclare(strict_types=1);\n\nreturn [\n];\n";
+            $content = '<?php' . \PHP_EOL . 'declare(strict_types=1);' . \PHP_EOL . \PHP_EOL . 'return [' . \PHP_EOL . '];' . \PHP_EOL;
         }
 
         if (\count($classes) !== 0) {
@@ -65,9 +60,13 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
     /**
      * {@inheritdoc}
      */
-    protected function replaceContent($class, $content): string
+    protected function replaceContent(array $data, $content): string
     {
-        return \str_replace('    ' . $class . ',', '', $content);
+        foreach ($data as $class) {
+            $content = \str_replace('    ' . $class . ',' . \PHP_EOL, '', $content);
+        }
+
+        return $content;
     }
 
     /**
@@ -84,7 +83,7 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
         $content = '';
 
         foreach ($classes as $class) {
-            $content .= '    ' . $class . ",\n";
+            $content .= '    ' . $class . ',' . \PHP_EOL;
 
             $this->write(\sprintf('Enabling [%s] as a %s service provider.', $class, $type));
         }

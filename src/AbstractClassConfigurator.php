@@ -2,11 +2,11 @@
 declare(strict_types=1);
 namespace Narrowspark\Automatic\Configurator;
 
+use Composer\IO\IOInterface;
 use Narrowspark\Automatic\Common\Configurator\AbstractConfigurator;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 use Narrowspark\Automatic\Common\Traits\PhpFileMarkerTrait;
 use Narrowspark\Automatic\Configurator\Traits\DumpTrait;
-use Narrowspark\Automatic\Configurator\Traits\GetSortedClassesTrait;
 
 /**
  * @internal
@@ -15,7 +15,6 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
 {
     use DumpTrait;
     use PhpFileMarkerTrait;
-    use GetSortedClassesTrait;
 
     /**
      * The composer option name.
@@ -55,6 +54,14 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
     /**
      * {@inheritdoc}
      */
+    public static function getName(): string
+    {
+        return static::$optionName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configure(PackageContract $package): void
     {
         $this->write(static::$configureOutputMessage);
@@ -62,10 +69,12 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
         $sortedClasses = $this->getSortedClasses($package, static::$optionName);
 
         if (\count($sortedClasses) === 0) {
+            $this->io->writeError('      - No configuration was found', true, IOInterface::VERY_VERBOSE);
+
             return;
         }
 
-        foreach ($sortedClasses as $env => $providers) {
+        foreach ($sortedClasses as $env => $classes) {
             $filePath = $this->getConfFile($env);
 
             if ($this->isFileMarked($package->getName(), $filePath)) {
@@ -74,7 +83,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
 
             $this->dump(
                 $filePath,
-                $this->generateFileContent($package, $filePath, $providers, $env)
+                $this->generateFileContent($package, $filePath, $classes, $env)
             );
         }
     }
@@ -109,14 +118,12 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
             \unlink($filePath);
         }
 
-        foreach ($sortedClasses as $env => $classes) {
-            foreach ($classes as $class) {
-                if (! isset($contents[$env])) {
-                    continue;
-                }
-
-                $contents[$env] = $this->replaceContent($class, $contents[$env]);
+        foreach ($sortedClasses as $env => $data) {
+            if (! isset($contents[$env])) {
+                continue;
             }
+
+            $contents[$env] = $this->replaceContent($data, $contents[$env]);
         }
 
         $spaces = \str_repeat(' ', static::$spaceMultiplication);
@@ -124,7 +131,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
         foreach ($contents as $key => $content) {
             $this->dump(
                 $this->getConfFile((string) $key),
-                \str_replace([$spaces . '/** > ' . $package->getName() . " **/\n", $spaces . '/** ' . $package->getName() . " < **/\n"], '', $content)
+                \str_replace([$spaces . '/** > ' . $package->getName() . ' **/' . \PHP_EOL, $spaces . '/** ' . $package->getName() . ' < **/' . \PHP_EOL], '', $content)
             );
         }
     }
@@ -138,9 +145,9 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
      */
     protected function getConfFile(string $type): string
     {
-        $type = $type === 'global' ? '' : $type;
+        $type = $type === 'global' ? '' : $type . \DIRECTORY_SEPARATOR;
 
-        return self::expandTargetDir($this->options, '%CONFIG_DIR%' . \DIRECTORY_SEPARATOR . $type . \DIRECTORY_SEPARATOR . static::$configFileName . '.php');
+        return self::expandTargetDir($this->options, '%CONFIG_DIR%' . \DIRECTORY_SEPARATOR . $type . static::$configFileName . '.php');
     }
 
     /**
@@ -163,10 +170,20 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
     /**
      * Replace a string in content.
      *
-     * @param string $class
+     * @param array  $data
      * @param string $content
      *
      * @return string
      */
-    abstract protected function replaceContent($class, $content): string;
+    abstract protected function replaceContent(array $data, $content): string;
+
+    /**
+     * Returns a sorted array of given classes, from package extra options.
+     *
+     * @param \Narrowspark\Automatic\Common\Contract\Package $package
+     * @param string                                         $key
+     *
+     * @return array
+     */
+    abstract protected function getSortedClasses(PackageContract $package, string $key): array;
 }

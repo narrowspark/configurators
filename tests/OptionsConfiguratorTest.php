@@ -66,9 +66,7 @@ final class OptionsConfiguratorTest extends MockeryTestCase
 
     public function testConfigure(): void
     {
-        $this->ioMock->shouldReceive('writeError')
-            ->once()
-            ->with(['    - Writing package configuration'], true, 4);
+        $this->arrangeWriteMessage();
 
         $this->configurator->configure($this->arrangePackage());
 
@@ -94,12 +92,10 @@ final class OptionsConfiguratorTest extends MockeryTestCase
 
     public function testConfigureWithEmpty(): void
     {
+        $this->arrangeWriteMessage();
         $this->ioMock->shouldReceive('writeError')
             ->once()
-            ->with(['    - Writing package configuration'], true, 4);
-        $this->ioMock->shouldReceive('write')
-            ->once()
-            ->with('      - No configuration was found', true, 4);
+            ->with('      - No configuration was found', true, IOInterface::VERY_VERBOSE);
 
         $package = new Package('test/bar', '^1.0.0');
         $package->setConfig([
@@ -115,7 +111,7 @@ final class OptionsConfiguratorTest extends MockeryTestCase
     {
         $this->ioMock->shouldReceive('writeError')
             ->once()
-            ->with(['    - Removing package configuration'], true, 4);
+            ->with(['    - Removing package configuration'], true, IOInterface::VERBOSE);
 
         $this->configurator->unconfigure($this->arrangePackage());
 
@@ -155,5 +151,12 @@ final class OptionsConfiguratorTest extends MockeryTestCase
         ]);
 
         return $package;
+    }
+
+    private function arrangeWriteMessage(): void
+    {
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Writing package configuration'], true, IOInterface::VERBOSE);
     }
 }

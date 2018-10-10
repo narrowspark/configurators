@@ -85,7 +85,9 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
     public function testConfigureWithGlobalProxy(): void
     {
-        $package = new Package('test', '^1.0.0');
+        $name = 'test/proxy';
+
+        $package = new Package($name, '^1.0.0');
         $package->setConfig([
             'configurators' => [
                 'proxies'   => [
@@ -96,7 +98,7 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        static::assertTrue($this->isFileMarked('test', $this->globalPath));
+        static::assertTrue($this->isFileMarked($name, $this->globalPath));
 
         $array = include $this->globalPath;
 
@@ -105,7 +107,9 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
     public function testConfigureWithGlobalAndLocalProxy(): void
     {
-        $package = new Package('test', '^1.0.0');
+        $name = 'test/proxy';
+
+        $package = new Package($name, '^1.0.0');
         $package->setConfig([
             'configurators' => [
                 'proxies'   => [
@@ -116,8 +120,8 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        static::assertTrue($this->isFileMarked('test', $this->globalPath));
-        static::assertTrue($this->isFileMarked('test', $this->localPath));
+        static::assertTrue($this->isFileMarked($name, $this->globalPath));
+        static::assertTrue($this->isFileMarked($name, $this->localPath));
 
         $array = include $this->globalPath;
 
@@ -152,7 +156,9 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
     public function testUpdateExistedFileWithGlobalProxy(): void
     {
-        $package = new Package('test', '^1.0.0');
+        $name = 'test/proxy';
+
+        $package = new Package($name, '^1.0.0');
         $package->setConfig([
             'configurators' => [
                 'proxies'   => [
@@ -163,13 +169,15 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        static::assertTrue($this->isFileMarked('test', $this->globalPath));
+        static::assertTrue($this->isFileMarked($name, $this->globalPath));
 
         $array = include $this->globalPath;
 
         static::assertSame(self::class, $array['viserio']['staticalproxy']['aliases']['ProxyConfiguratorTest']);
 
-        $package = new Package('test2', '^1.0.0');
+        $name = 'test/proxy2';
+
+        $package = new Package($name, '^1.0.0');
         $package->setConfig([
             'configurators' => [
                 'proxies'   => [
@@ -180,7 +188,7 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        static::assertTrue($this->isFileMarked('test2', $this->globalPath));
+        static::assertTrue($this->isFileMarked($name, $this->globalPath));
 
         $array = include $this->globalPath;
 
@@ -248,7 +256,9 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
     public function testUnconfigureWithGlobalProxies(): void
     {
-        $package = new Package('test', '^1.0.0');
+        $name = 'test/proxy';
+
+        $package = new Package($name, '^1.0.0');
         $package->setConfig([
             'configurators' => [
                 'proxies'   => [
@@ -259,11 +269,11 @@ final class ProxyConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        static::assertTrue($this->isFileMarked('test', $this->globalPath));
+        static::assertTrue($this->isFileMarked($name, $this->globalPath));
 
         $this->configurator->unconfigure($package);
 
-        static::assertFalse($this->isFileMarked('test', $this->globalPath));
+        static::assertFalse($this->isFileMarked($name, $this->globalPath));
 
         $package = new Package('test2', '^1.0.0');
         $package->setConfig([
