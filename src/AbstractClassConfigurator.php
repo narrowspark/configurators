@@ -172,10 +172,11 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
      */
     protected function replaceContent(string $content, PackageContract $package): string
     {
-        $count = 0;
+        $count  = 0;
+        $spaces = \str_repeat(' ', static::$spaceMultiplication);
 
         $replacedContent = \preg_replace(
-            \sprintf('{/\*\* > %s \*\*\/.*\/\*\* %s < \*\*\/}s', $package->getPrettyName(), $package->getPrettyName()),
+            \sprintf('{%s/\*\* > %s \*\*\/.*%s\/\*\* %s < \*\*\/%s}s', $spaces, $package->getPrettyName(), $spaces, $package->getPrettyName(), \PHP_EOL),
             '',
             $content,
             -1,

@@ -302,6 +302,23 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
 
         $this->ioMock->shouldReceive('writeError')
             ->once()
+            ->with('      - Enabling [\Viserio\Component\Foundation\Bootstrap\LoadEnvironmentVariables2::class] as [\'console\', \'http\'] bootstrapper in [global] environment', true, IOInterface::VERY_VERBOSE);
+
+        $package = new Package('test/foo', '^1.0.0');
+        $package->setConfig([
+            'configurators' => [
+                'bootstrap' => [
+                    'Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables2' => ['console', 'http'],
+                ],
+            ],
+        ]);
+
+        $this->configurator->configure($package);
+
+        $this->arrangeEnableMessage();
+
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
             ->with('      - Enabling [\Viserio\Component\Foundation\Bootstrap\LoadEnvironmentVariables::class] as [\'console\', \'http\'] bootstrapper in [global] environment', true, IOInterface::VERY_VERBOSE);
 
         $name = 'test/bootstrap';
@@ -333,7 +350,7 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        static::assertCount(0, $array);
+        static::assertCount(1, $array);
     }
 
     /**
