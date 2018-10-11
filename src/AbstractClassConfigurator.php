@@ -123,16 +123,11 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
                 continue;
             }
 
-            $contents[$env] = $this->replaceContent($data, $contents[$env]);
+            $contents[$env] = $this->replaceContent($contents[$env], $package);
         }
 
-        $spaces = \str_repeat(' ', static::$spaceMultiplication);
-
         foreach ($contents as $key => $content) {
-            $this->dump(
-                $this->getConfFile((string) $key),
-                \str_replace([$spaces . '/** > ' . $package->getName() . ' **/' . \PHP_EOL, $spaces . '/** ' . $package->getName() . ' < **/' . \PHP_EOL], '', $content)
-            );
+            $this->dump($this->getConfFile((string) $key), $content);
         }
     }
 
@@ -170,12 +165,29 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
     /**
      * Replace a string in content.
      *
-     * @param array  $data
-     * @param string $content
+     * @param string                                         $content
+     * @param \Narrowspark\Automatic\Common\Contract\Package $package
      *
      * @return string
      */
-    abstract protected function replaceContent(array $data, $content): string;
+    protected function replaceContent(string $content, PackageContract $package): string
+    {
+        $count = 0;
+
+        $replacedContent = \preg_replace(
+            \sprintf('{/\*\* > %s \*\*\/.*\/\*\* %s < \*\*\/}s', $package->getPrettyName(), $package->getPrettyName()),
+            '',
+            $content,
+            -1,
+            $count
+        );
+
+        if ($count === 0) {
+            return $content;
+        }
+
+        return $replacedContent;
+    }
 
     /**
      * Returns a sorted array of given classes, from package extra options.

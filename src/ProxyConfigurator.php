@@ -66,23 +66,6 @@ final class ProxyConfigurator extends AbstractClassConfigurator
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function replaceContent(array $data, $content): string
-    {
-        $spaces = \str_repeat(' ', static::$spaceMultiplication);
-
-        foreach ($data as $class) {
-            $className = \explode('\\', $class);
-            $className = \end($className);
-
-            $content = \str_replace($spaces . '\'' . \str_replace('::class', '', $className) . '\' => ' . $class . ',' . \PHP_EOL, '', $content);
-        }
-
-        return $content;
-    }
-
-    /**
      * Builds a array value with class names.
      *
      * @param \Narrowspark\Automatic\Common\Contract\Package $package

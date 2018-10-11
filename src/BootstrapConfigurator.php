@@ -59,20 +59,6 @@ final class BootstrapConfigurator extends AbstractClassConfigurator
     /**
      * {@inheritdoc}
      */
-    protected function replaceContent(array $data, $content): string
-    {
-        $spaces    = \str_repeat(' ', static::$spaceMultiplication);
-
-        foreach ($data as $class => $types) {
-            $content = \str_replace($spaces . $class . ' => [\'' . \implode('\', \'', $types) . '\'],' . \PHP_EOL, '', $content);
-        }
-
-        return $content;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getSortedClasses(PackageContract $package, string $key): array
     {
         $sortedClasses = [];

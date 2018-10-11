@@ -58,18 +58,6 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function replaceContent(array $data, $content): string
-    {
-        foreach ($data as $class) {
-            $content = \str_replace('    ' . $class . ',' . \PHP_EOL, '', $content);
-        }
-
-        return $content;
-    }
-
-    /**
      * Builds a array value with class names.
      *
      * @param \Narrowspark\Automatic\Common\Contract\Package $package
