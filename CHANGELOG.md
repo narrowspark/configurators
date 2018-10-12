@@ -1,3 +1,13 @@
+## v0.6.0
+
+- Total issues resolved: **1**
+- Total pull requests resolved: **0**
+- Total contributors: **1**
+
+### Added
+
+ - [8: Create a new bootstrap configurator](https://github.com/narrowspark/configurators/issues/8) thanks to @prisis
+
 ## v0.5.1
 
 - Total issues resolved: **0**
