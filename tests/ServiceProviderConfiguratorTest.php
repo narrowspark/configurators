@@ -292,6 +292,9 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
         $this->ioMock->shouldReceive('writeError')
             ->once()
             ->with(['    - Enabling the package as a Narrowspark service provider'], true, IOInterface::VERBOSE);
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with('      - No configuration was found', true, IOInterface::VERY_VERBOSE);
 
         $this->configurator->configure($package);
 
