@@ -176,7 +176,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
         $spaces = \str_repeat(' ', static::$spaceMultiplication);
 
         $replacedContent = \preg_replace(
-            \sprintf('{%s/\*\* > %s \*\*\/.*%s\/\*\* %s < \*\*\/%s}s', $spaces, $package->getPrettyName(), $spaces, $package->getPrettyName(), \PHP_EOL),
+            \sprintf('{%s/\*\* > %s \*\*\/.*%s\/\*\* %s < \*\*\/%s}s', $spaces, $package->getPrettyName(), $spaces, $package->getPrettyName(), "\n"),
             '',
             $content,
             -1,
