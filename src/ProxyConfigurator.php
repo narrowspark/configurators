@@ -4,9 +4,12 @@ namespace Narrowspark\Automatic\Configurator;
 
 use Composer\IO\IOInterface;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
+use Narrowspark\Automatic\Configurator\Traits\GetSortedClassesTrait;
 
 final class ProxyConfigurator extends AbstractClassConfigurator
 {
+    use GetSortedClassesTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -35,14 +38,6 @@ final class ProxyConfigurator extends AbstractClassConfigurator
     /**
      * {@inheritdoc}
      */
-    public static function getName(): string
-    {
-        return 'proxies';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function generateFileContent(
         PackageContract $package,
         string $filePath,
@@ -54,7 +49,7 @@ final class ProxyConfigurator extends AbstractClassConfigurator
 
             \unlink($filePath);
         } else {
-            $content = "<?php\ndeclare(strict_types=1);\n\nreturn [\n    'viserio' => [\n        'staticalproxy' => [\n            'aliases' => [\n            ],\n        ],\n    ],\n];";
+            $content = '<?php' . \PHP_EOL . 'declare(strict_types=1);' . \PHP_EOL . \PHP_EOL . 'return [' . \PHP_EOL . '    \'viserio\' => [' . \PHP_EOL . '        \'staticalproxy\' => [' . \PHP_EOL . '            \'aliases\' => [' . \PHP_EOL . '            ],' . \PHP_EOL . '        ],' . \PHP_EOL . '    ],' . \PHP_EOL . '];';
         }
 
         if (\count($classes) !== 0) {
@@ -69,18 +64,6 @@ final class ProxyConfigurator extends AbstractClassConfigurator
         }
 
         return $content;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function replaceContent($class, $content): string
-    {
-        $className = \explode('\\', $class);
-        $className = \end($className);
-        $spaces    = \str_repeat(' ', static::$spaceMultiplication);
-
-        return \str_replace($spaces . '\'' . \str_replace('::class', '', $className) . '\' => ' . $class . ",\n", '', $content);
     }
 
     /**
@@ -101,7 +84,7 @@ final class ProxyConfigurator extends AbstractClassConfigurator
             $className = \explode('\\', $class);
             $className = \end($className);
 
-            $content .= $spaces . '\'' . \str_replace('::class', '', $className) . '\' => ' . $class . ",\n";
+            $content .= $spaces . '\'' . \str_replace('::class', '', $className) . '\' => ' . $class . ',' . \PHP_EOL;
 
             $this->io->writeError(\sprintf('        - Enabling [%s] as a %s proxy.', $class, $env), true, IOInterface::VERBOSE);
         }

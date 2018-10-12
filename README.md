@@ -17,7 +17,7 @@ composer require narrowspark/automatic narrowspark/configurators
 Configurators
 -------------
 There are several types of tasks, which are called **configurators**:
-`proxies`, `options` and `providers`.
+`proxies`, `options`, `bootstrap` and `providers`.
 
 `proxies` Configurator
 
@@ -44,7 +44,7 @@ This example creates a new `Route` static proxy:
 
 Enables one or more service provider in the Narrowspark application by appending them to the `serviceproviders.php` file.
 Its value is an associative array where the key is the service provider class name and the value is an array of environments where it must be enabled.
-The supported environments are local, prod, testing and global (which enables the bundle in all environments):
+The supported environments are `local`, `prod`, `testing` and `global` (which enables the `service provider` in all environments):
 
 ```json
 {   
@@ -85,7 +85,9 @@ return [
 
 Adds new config files to the `config` folder provided from your root composer.json `config-dir` name.
 
-This example creates a new `view` config:
+> NOTE: The package name is taken to generate the file name.
+
+This example creates a new `view` config file in the `packages` dir:
 
 ```json
 {   
@@ -97,6 +99,38 @@ This example creates a new `view` config:
                         "paths": null
                     }
                 }
+            }
+        }
+    }
+}
+```
+
+`bootstrap` Configurator
+
+Adds new `bootstrap.php` files to the `config` folder provided from your root composer.json `config-dir` name.
+
+This example creates new `bootstrap` configs for the `console` and `http` kernel:
+You can choose between `http`, `console` and `global` type to configure your kernel bootstraps, 
+with the possibility to configure bootstraps for your chosen environment.
+
+> NOTE: The `global` type will configure both kernel.
+
+```json
+{   
+    "extra": {
+        "automatic": {
+            "bootstrap": {
+                "Viserio\\Component\\Foundation\\Bootstrap\\ConfigureKernel": [
+                    {
+                        "env": "local",
+                        "type": ["global"]
+                    },
+                    {
+                        "env": "testing",
+                        "type": ["console"]
+                    }
+                ],
+                "Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables": ["http"]
             }
         }
     }
