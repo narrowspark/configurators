@@ -111,51 +111,6 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
         static::assertSame(['global'], $array['Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables']);
     }
 
-    public function testConfigureWithEnvBasedBootstraps(): void
-    {
-        $this->arrangeEnableMessage();
-
-        $this->ioMock->shouldReceive('writeError')
-            ->once()
-            ->with('      - Enabling [\Viserio\Component\Foundation\Bootstrap\ConfigureKernel::class] as [\'global\'] bootstrapper in [local] environment', true, IOInterface::VERY_VERBOSE);
-        $this->ioMock->shouldReceive('writeError')
-            ->once()
-            ->with('      - Enabling [\Viserio\Component\Foundation\Bootstrap\ConfigureKernel::class] as [\'console\', \'http\'] bootstrapper in [testing] environment', true, IOInterface::VERY_VERBOSE);
-
-        $name = 'test/bootstrap';
-
-        $package = new Package($name, '^1.0.0');
-        $package->setConfig([
-            'configurators' => [
-                'bootstrap' => [
-                    'Viserio\\Component\\Foundation\\Bootstrap\\ConfigureKernel' => [
-                        [
-                            'env'  => 'local',
-                            'type' => ['global'],
-                        ],
-                        [
-                            'env'  => 'testing',
-                            'type' => ['console', 'http'],
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-
-        $this->configurator->configure($package);
-
-        static::assertTrue($this->isFileMarked($name, $this->localPath));
-
-        $array = include $this->localPath;
-
-        static::assertSame(['global'], $array['Viserio\\Component\\Foundation\\Bootstrap\\ConfigureKernel']);
-        static::assertTrue($this->isFileMarked($name, $this->testingPath));
-
-        $array = include $this->testingPath;
-
-        static::assertSame(['console', 'http'], $array['Viserio\\Component\\Foundation\\Bootstrap\\ConfigureKernel']);
-    }
-
     public function testConfigureWithEmpty(): void
     {
         $this->arrangeEnableMessage();
