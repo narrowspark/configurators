@@ -61,7 +61,7 @@ final class OptionsConfiguratorTest extends MockeryTestCase
 
     public function testGetName(): void
     {
-        static::assertSame('options', OptionsConfigurator::getName());
+        $this->assertSame('options', OptionsConfigurator::getName());
     }
 
     public function testConfigure(): void
@@ -72,11 +72,11 @@ final class OptionsConfiguratorTest extends MockeryTestCase
 
         $filePath = $this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'bar.php';
 
-        static::assertFileExists($filePath);
+        $this->assertFileExists($filePath);
 
         $config = require $filePath;
 
-        static::assertSame(
+        $this->assertSame(
             $config,
             [
                 'test'  => 'foo',
@@ -117,7 +117,7 @@ final class OptionsConfiguratorTest extends MockeryTestCase
 
         $filePath = $this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'bar.php';
 
-        static::assertFileNotExists($filePath);
+        $this->assertFileNotExists($filePath);
     }
 
     /**

@@ -120,16 +120,6 @@ with the possibility to configure bootstraps for your chosen environment.
     "extra": {
         "automatic": {
             "bootstrap": {
-                "Viserio\\Component\\Foundation\\Bootstrap\\ConfigureKernel": [
-                    {
-                        "env": "local",
-                        "type": ["global"]
-                    },
-                    {
-                        "env": "testing",
-                        "type": ["console"]
-                    }
-                ],
                 "Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables": ["http"]
             }
         }

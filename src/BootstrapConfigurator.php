@@ -48,7 +48,7 @@ final class BootstrapConfigurator extends AbstractClassConfigurator
         if (\count($classes) !== 0) {
             $content = $this->doInsertStringBeforePosition(
                 $content,
-                $this->buildClassNamesContent($package, $classes, $env),
+                $this->buildClassNamesContent($package, $classes),
                 (int) \mb_strpos($content, '];')
             );
         }
@@ -67,15 +67,7 @@ final class BootstrapConfigurator extends AbstractClassConfigurator
             $class = \mb_strpos($class, '::class') !== false ? $class : $class . '::class';
             $class = '\\' . \ltrim((string) $class, '\\');
 
-            if (isset($values[0]) && \is_array($values[0])) {
-                foreach ($values as $data) {
-                    if (isset($data['env'], $data['type'])) {
-                        $sortedClasses[$data['env']][$class] = (array) $data['type'];
-                    }
-                }
-            } else {
-                $sortedClasses['global'][$class] = (array) $values;
-            }
+            $sortedClasses['global'][$class] = (array) $values;
         }
 
         return $sortedClasses;
@@ -86,11 +78,10 @@ final class BootstrapConfigurator extends AbstractClassConfigurator
      *
      * @param \Narrowspark\Automatic\Common\Contract\Package $package
      * @param array                                          $classes
-     * @param string                                         $env
      *
      * @return string
      */
-    private function buildClassNamesContent(PackageContract $package, array $classes, string $env): string
+    private function buildClassNamesContent(PackageContract $package, array $classes): string
     {
         $content = '';
         $types   = \array_values($classes);
@@ -99,7 +90,7 @@ final class BootstrapConfigurator extends AbstractClassConfigurator
             $content .= '    ' . $class . ' => [\'' . \implode('\', \'', $data) . "']," . \PHP_EOL;
 
             $this->io->writeError(
-                \sprintf('      - Enabling [%s] as [\'%s\'] bootstrapper in [%s] environment', $class, \implode('\', \'', $types[0]), $env),
+                \sprintf('      - Enabling [%s] as [\'%s\'] bootstrapper', $class, \implode('\', \'', $types[0])),
                 true,
                 IOInterface::VERY_VERBOSE
             );

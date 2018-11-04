@@ -82,9 +82,8 @@ final class ProxyConfigurator extends AbstractClassConfigurator
 
         foreach ($classes as $class) {
             $className = \explode('\\', $class);
-            $className = \end($className);
 
-            $content .= $spaces . '\'' . \str_replace('::class', '', $className) . '\' => ' . $class . ',' . \PHP_EOL;
+            $content .= $spaces . '\'' . \str_replace('::class', '', (string) \end($className)) . '\' => ' . $class . ',' . \PHP_EOL;
 
             $this->io->writeError(\sprintf('        - Enabling [%s] as a %s proxy.', $class, $env), true, IOInterface::VERBOSE);
         }

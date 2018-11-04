@@ -26,7 +26,7 @@ final class GetSortedClassesTraitTest extends MockeryTestCase
 
         $array = $this->getSortedClasses($package, 'providers');
 
-        static::assertEquals(
+        $this->assertEquals(
             [
                 'global' => [
                     self::class . '::class'         => '\\' . self::class . '::class',
