@@ -183,7 +183,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
             $count
         );
 
-        if ($count === 0) {
+        if ($replacedContent === null || $count === 0) {
             return $content;
         }
 
