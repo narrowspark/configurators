@@ -55,6 +55,7 @@ final class OptionsConfiguratorTest extends MockeryTestCase
     {
         parent::tearDown();
 
+        @\unlink($this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'bar.php');
         @\rmdir($this->dir . \DIRECTORY_SEPARATOR . 'packages');
         @\rmdir($this->dir);
     }
@@ -88,6 +89,64 @@ final class OptionsConfiguratorTest extends MockeryTestCase
                 self::class => true,
             ]
         );
+    }
+
+    public function testConfigureWithEnv(): void
+    {
+        $this->arrangeWriteMessage();
+
+        $package = new Package('test/bar', '^1.0.0');
+        $package->setConfig([
+            'configurators' => [
+                'options' => [
+                    'global' => [
+                        'test'  => 'foo',
+                        'multi' => [
+                            'test'  => 'bar',
+                            'class' => self::class,
+                        ],
+                    ],
+                    'local' => [
+                        'class'     => self::class,
+                        self::class => true,
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->configurator->configure($package);
+
+        $filePath    = $this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'bar.php';
+        $envFilePath = $this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'local' . \DIRECTORY_SEPARATOR . 'bar.php';
+
+        $this->assertFileExists($filePath);
+
+        $config = require $filePath;
+
+        $this->assertFileExists($envFilePath);
+
+        $envConfig = require $envFilePath;
+
+        $this->assertSame(
+            $config,
+            [
+                'test'  => 'foo',
+                'multi' => [
+                    'test'  => 'bar',
+                    'class' => self::class,
+                ],
+            ]
+        );
+        $this->assertSame(
+            $envConfig,
+            [
+                'class'     => self::class,
+                self::class => true,
+            ]
+        );
+
+        @\unlink($this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'local' . \DIRECTORY_SEPARATOR . 'bar.php');
+        @\rmdir($this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'local');
     }
 
     public function testConfigureWithEmpty(): void
@@ -139,13 +198,15 @@ final class OptionsConfiguratorTest extends MockeryTestCase
         $package->setConfig([
             'configurators' => [
                 'options' => [
-                    'test'  => 'foo',
-                    'multi' => [
-                        'test'  => 'bar',
-                        'class' => self::class,
+                    'global' => [
+                        'test'  => 'foo',
+                        'multi' => [
+                            'test'  => 'bar',
+                            'class' => self::class,
+                        ],
+                        'class'     => self::class,
+                        self::class => true,
                     ],
-                    'class'     => self::class,
-                    self::class => true,
                 ],
             ],
         ]);

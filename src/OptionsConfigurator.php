@@ -35,13 +35,15 @@ final class OptionsConfigurator extends AbstractConfigurator
             return;
         }
 
-        $content = '<?php' . \PHP_EOL . 'declare(strict_types=1);' . \PHP_EOL . \PHP_EOL . 'return ';
-        $content .= $this->print($options) . ';' . \PHP_EOL;
+        foreach (\array_keys($options) as $env) {
+            $content = '<?php' . \PHP_EOL . 'declare(strict_types=1);' . \PHP_EOL . \PHP_EOL . 'return ';
+            $content .= $this->print($options[$env]) . ';' . \PHP_EOL;
 
-        $this->dump(
-            $this->getConfigFilePath($package),
-            $content
-        );
+            $this->dump(
+                $this->getConfigFilePath($package, $env),
+                $content
+            );
+        }
     }
 
     /**
@@ -51,7 +53,15 @@ final class OptionsConfigurator extends AbstractConfigurator
     {
         $this->write('Removing package configuration');
 
-        $this->filesystem->remove($this->getConfigFilePath($package));
+        $options = (array) $package->getConfig(ConfiguratorContract::TYPE, self::getName());
+
+        if (\count($options) === 0) {
+            return;
+        }
+
+        foreach (\array_keys($options) as $env) {
+            $this->filesystem->remove($this->getConfigFilePath($package, $env));
+        }
     }
 
     /**
@@ -139,13 +149,15 @@ final class OptionsConfigurator extends AbstractConfigurator
 
     /**
      * @param \Narrowspark\Automatic\Common\Contract\Package $package
+     * @param string                                         $env
      *
      * @return string
      */
-    private function getConfigFilePath(PackageContract $package): string
+    private function getConfigFilePath(PackageContract $package, string $env): string
     {
-        $explode = \explode('/', $package->getName());
+        $explode   = \explode('/', $package->getName());
+        $envFolder = $env === 'global' ? '' : $env . \DIRECTORY_SEPARATOR;
 
-        return self::expandTargetDir($this->options, '%CONFIG_DIR%' . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . \end($explode) . '.php');
+        return self::expandTargetDir($this->options, '%CONFIG_DIR%' . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . $envFolder . \end($explode) . '.php');
     }
 }
