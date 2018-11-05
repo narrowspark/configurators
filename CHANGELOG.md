@@ -1,3 +1,16 @@
+v0.7.0
+======
+
+- Total issues resolved: **1**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
+
+Changed
+-------
+
+ - [12: removed the env support from bootstrap configurator](https://github.com/narrowspark/configurators/pull/12) thanks to @prisis
+ - [10: Extend the options configurator](https://github.com/narrowspark/configurators/issues/10) thanks to @prisis
+
 ## v0.6.0
 
 - Total issues resolved: **1**
