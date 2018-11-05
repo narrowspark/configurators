@@ -55,6 +55,7 @@ final class OptionsConfiguratorTest extends MockeryTestCase
     {
         parent::tearDown();
 
+        @\unlink($this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'bar.php');
         @\rmdir($this->dir . \DIRECTORY_SEPARATOR . 'packages');
         @\rmdir($this->dir);
     }
@@ -90,7 +91,65 @@ final class OptionsConfiguratorTest extends MockeryTestCase
         );
     }
 
-    public function testConfigureWithEmpty(): void
+    public function testConfigureWithEnv(): void
+    {
+        $this->arrangeWriteMessage();
+
+        $package = new Package('test/bar', '^1.0.0');
+        $package->setConfig([
+            'configurators' => [
+                'options' => [
+                    'global' => [
+                        'test'  => 'foo',
+                        'multi' => [
+                            'test'  => 'bar',
+                            'class' => self::class,
+                        ],
+                    ],
+                    'local' => [
+                        'class'     => self::class,
+                        self::class => true,
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->configurator->configure($package);
+
+        $filePath    = $this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'bar.php';
+        $envFilePath = $this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'local' . \DIRECTORY_SEPARATOR . 'bar.php';
+
+        $this->assertFileExists($filePath);
+
+        $config = require $filePath;
+
+        $this->assertFileExists($envFilePath);
+
+        $envConfig = require $envFilePath;
+
+        $this->assertSame(
+            $config,
+            [
+                'test'  => 'foo',
+                'multi' => [
+                    'test'  => 'bar',
+                    'class' => self::class,
+                ],
+            ]
+        );
+        $this->assertSame(
+            $envConfig,
+            [
+                'class'     => self::class,
+                self::class => true,
+            ]
+        );
+
+        @\unlink($this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'local' . \DIRECTORY_SEPARATOR . 'bar.php');
+        @\rmdir($this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'local');
+    }
+
+    public function testConfigureWithEmptyOptions(): void
     {
         $this->arrangeWriteMessage();
         $this->ioMock->shouldReceive('writeError')
@@ -107,7 +166,7 @@ final class OptionsConfiguratorTest extends MockeryTestCase
         $this->configurator->configure($package);
     }
 
-    public function testUnConfigure(): void
+    public function testUnconfigure(): void
     {
         $this->ioMock->shouldReceive('writeError')
             ->once()
@@ -118,6 +177,22 @@ final class OptionsConfiguratorTest extends MockeryTestCase
         $filePath = $this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'bar.php';
 
         $this->assertFileNotExists($filePath);
+    }
+
+    public function testUnconfigureWithEmptyOptions(): void
+    {
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Removing package configuration'], true, IOInterface::VERBOSE);
+
+        $package = new Package('test/bar', '^1.0.0');
+        $package->setConfig([
+            'configurators' => [
+                'options' => [],
+            ],
+        ]);
+
+        $this->configurator->unconfigure($package);
     }
 
     /**
@@ -139,13 +214,15 @@ final class OptionsConfiguratorTest extends MockeryTestCase
         $package->setConfig([
             'configurators' => [
                 'options' => [
-                    'test'  => 'foo',
-                    'multi' => [
-                        'test'  => 'bar',
-                        'class' => self::class,
+                    'global' => [
+                        'test'  => 'foo',
+                        'multi' => [
+                            'test'  => 'bar',
+                            'class' => self::class,
+                        ],
+                        'class'     => self::class,
+                        self::class => true,
                     ],
-                    'class'     => self::class,
-                    self::class => true,
                 ],
             ],
         ]);

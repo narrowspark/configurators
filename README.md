@@ -87,16 +87,29 @@ Adds new config files to the `config` folder provided from your root composer.js
 
 > NOTE: The package name is taken to generate the file name.
 
-This example creates a new `view` config file in the `packages` dir:
+This example creates a new `view` config file in the `packages` folder and `packages/test` folder:
+
+> NOTE: The first array key is taken as environment key, like `global` or `test` in this example.
 
 ```json
 {   
     "extra": {
         "automatic": {
             "options": {
-                "viserio": {
-                    "view": {
-                        "paths": null
+                "global": {
+                    "viserio": {
+                        "view": {
+                            "paths": null
+                        }
+                    }
+                },
+                "test": {
+                    "viserio": {
+                        "view": {
+                            "paths": [
+                                "./views/"
+                            ]
+                        }
                     }
                 }
             }
@@ -107,13 +120,13 @@ This example creates a new `view` config file in the `packages` dir:
 
 `bootstrap` Configurator
 
-Adds new `bootstrap.php` files to the `config` folder provided from your root composer.json `config-dir` name.
-
 This example creates new `bootstrap` configs for the `console` and `http` kernel:
 You can choose between `http`, `console` and `global` type to configure your kernel bootstraps, 
 with the possibility to configure bootstraps for your chosen environment.
 
-> NOTE: The `global` type will configure both kernel.
+> NOTE: Generates a new `bootstrap.php` file to the `config` folder provided from your root composer.json `config-dir` name, if the file doesn't exists.
+
+> NOTE: The `global` type will configure both kernels.
 
 ```json
 {   
