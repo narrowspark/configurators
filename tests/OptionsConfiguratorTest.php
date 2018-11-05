@@ -149,7 +149,7 @@ final class OptionsConfiguratorTest extends MockeryTestCase
         @\rmdir($this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'local');
     }
 
-    public function testConfigureWithEmpty(): void
+    public function testConfigureWithEmptyOptions(): void
     {
         $this->arrangeWriteMessage();
         $this->ioMock->shouldReceive('writeError')
@@ -166,7 +166,7 @@ final class OptionsConfiguratorTest extends MockeryTestCase
         $this->configurator->configure($package);
     }
 
-    public function testUnConfigure(): void
+    public function testUnconfigure(): void
     {
         $this->ioMock->shouldReceive('writeError')
             ->once()
@@ -177,6 +177,22 @@ final class OptionsConfiguratorTest extends MockeryTestCase
         $filePath = $this->dir . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . 'bar.php';
 
         $this->assertFileNotExists($filePath);
+    }
+
+    public function testUnconfigureWithEmptyOptions(): void
+    {
+        $this->ioMock->shouldReceive('writeError')
+            ->once()
+            ->with(['    - Removing package configuration'], true, IOInterface::VERBOSE);
+
+        $package = new Package('test/bar', '^1.0.0');
+        $package->setConfig([
+            'configurators' => [
+                'options' => [],
+            ],
+        ]);
+
+        $this->configurator->unconfigure($package);
     }
 
     /**

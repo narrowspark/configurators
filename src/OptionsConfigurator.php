@@ -55,10 +55,6 @@ final class OptionsConfigurator extends AbstractConfigurator
 
         $options = (array) $package->getConfig(ConfiguratorContract::TYPE, self::getName());
 
-        if (\count($options) === 0) {
-            return;
-        }
-
         foreach (\array_keys($options) as $env) {
             $this->filesystem->remove($this->getConfigFilePath($package, $env));
         }
