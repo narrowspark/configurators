@@ -74,7 +74,7 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
         foreach ($classes as $class) {
             $content .= '    ' . $class . ',' . \PHP_EOL;
 
-            $this->io->writeError(\sprintf('        - Enabling [%s] as a %s service provider.', $class, $type), true, IOInterface::VERBOSE);
+            $this->io->writeError(\sprintf('        - Enabling [%s] as a %s service provider.', $class, $type), true, IOInterface::DEBUG);
         }
 
         return $this->markData($package->getName(), $content);
