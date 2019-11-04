@@ -1,10 +1,18 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Narrowspark\Automatic\Configurator;
 
 use Composer\IO\IOInterface;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 use Narrowspark\Automatic\Configurator\Traits\GetSortedClassesTrait;
+use function count;
+use function file_exists;
+use function file_get_contents;
+use function sprintf;
+use function strpos;
+use function unlink;
 
 final class ServiceProviderConfigurator extends AbstractClassConfigurator
 {
@@ -39,19 +47,19 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
         array $classes,
         string $type
     ): string {
-        if (\file_exists($filePath)) {
-            $content = (string) \file_get_contents($filePath);
+        if (file_exists($filePath)) {
+            $content = (string) file_get_contents($filePath);
 
-            \unlink($filePath);
+            unlink($filePath);
         } else {
-            $content = '<?php' . \PHP_EOL . 'declare(strict_types=1);' . \PHP_EOL . \PHP_EOL . 'return [' . \PHP_EOL . '];' . \PHP_EOL;
+            $content = '<?php' . "\n\n" . 'declare(strict_types=1);' . "\n\n" . 'return [' . "\n" . '];' . "\n";
         }
 
-        if (\count($classes) !== 0) {
+        if (count($classes) !== 0) {
             $content = $this->doInsertStringBeforePosition(
                 $content,
                 $this->buildClassNamesContent($package, $classes, $type),
-                (int) \mb_strpos($content, '];')
+                (int) strpos($content, '];')
             );
         }
 
@@ -72,9 +80,9 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
         $content = '';
 
         foreach ($classes as $class) {
-            $content .= '    ' . $class . ',' . \PHP_EOL;
+            $content .= '    ' . $class . ',' . "\n";
 
-            $this->io->writeError(\sprintf('        - Enabling [%s] as a %s service provider.', $class, $type), true, IOInterface::DEBUG);
+            $this->io->writeError(sprintf('        - Enabling [%s] as a %s service provider.', $class, $type), true, IOInterface::DEBUG);
         }
 
         return $this->markData($package->getName(), $content);

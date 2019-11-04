@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Narrowspark\Automatic\Test\Configurator;
 
 use Composer\Composer;
@@ -8,42 +10,35 @@ use Narrowspark\Automatic\Common\Package;
 use Narrowspark\Automatic\Common\Traits\PhpFileMarkerTrait;
 use Narrowspark\Automatic\Configurator\BootstrapConfigurator;
 use Narrowspark\TestingHelper\Phpunit\MockeryTestCase;
+use function dirname;
+use function rmdir;
+use function unlink;
 
 /**
  * @internal
+ *
+ * @small
  */
 final class BootstrapConfiguratorTest extends MockeryTestCase
 {
     use PhpFileMarkerTrait;
 
-    /**
-     * @var \Composer\Composer
-     */
+    /** @var \Composer\Composer */
     private $composer;
 
-    /**
-     * @var \Composer\IO\NullIo
-     */
+    /** @var \Composer\IO\NullIo */
     private $ioMock;
 
-    /**
-     * @var \Narrowspark\Automatic\Configurator\BootstrapConfigurator
-     */
+    /** @var \Narrowspark\Automatic\Configurator\BootstrapConfigurator */
     private $configurator;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $globalPath;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $localPath;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $testingPath;
 
     /**
@@ -54,13 +49,13 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
         parent::setUp();
 
         $this->composer = new Composer();
-        $this->ioMock   = $this->mock(IOInterface::class);
+        $this->ioMock = $this->mock(IOInterface::class);
 
         $dir = __DIR__ . '/BootstrapConfiguratorTest';
 
-        $this->globalPath   = $dir . '/bootstrap.php';
-        $this->localPath    = $dir . '/local/bootstrap.php';
-        $this->testingPath  = $dir . '/testing/bootstrap.php';
+        $this->globalPath = $dir . '/bootstrap.php';
+        $this->localPath = $dir . '/local/bootstrap.php';
+        $this->testingPath = $dir . '/testing/bootstrap.php';
 
         $this->configurator = new BootstrapConfigurator($this->composer, $this->ioMock, ['config-dir' => $dir]);
     }
@@ -72,15 +67,15 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
     {
         parent::tearDown();
 
-        @\unlink($this->globalPath);
+        @unlink($this->globalPath);
 
-        @\unlink($this->localPath);
-        @\rmdir(\dirname($this->localPath));
+        @unlink($this->localPath);
+        @rmdir(dirname($this->localPath));
 
-        @\unlink($this->testingPath);
-        @\rmdir(\dirname($this->testingPath));
+        @unlink($this->testingPath);
+        @rmdir(dirname($this->testingPath));
 
-        @\rmdir(__DIR__ . '/BootstrapConfiguratorTest');
+        @rmdir(__DIR__ . '/BootstrapConfiguratorTest');
     }
 
     public function testConfigureWithGlobalBootstrap(): void
@@ -104,11 +99,11 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        $this->assertTrue($this->isFileMarked($name, $this->globalPath));
+        self::assertTrue($this->isFileMarked($name, $this->globalPath));
 
         $array = include $this->globalPath;
 
-        $this->assertSame(['global'], $array['Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables']);
+        self::assertSame(['global'], $array['Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables']);
     }
 
     public function testConfigureWithEmpty(): void
@@ -151,11 +146,11 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        $this->assertCount(1, $array);
+        self::assertCount(1, $array);
 
         $this->configurator->configure($package);
 
-        $this->assertCount(1, $array);
+        self::assertCount(1, $array);
     }
 
     public function testConfigureWith2Packages(): void
@@ -179,11 +174,11 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        $this->assertTrue($this->isFileMarked($name, $this->globalPath));
+        self::assertTrue($this->isFileMarked($name, $this->globalPath));
 
         $array = include $this->globalPath;
 
-        $this->assertSame(['global'], $array['Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables']);
+        self::assertSame(['global'], $array['Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables']);
 
         $this->arrangeEnableMessage();
 
@@ -204,11 +199,11 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        $this->assertTrue($this->isFileMarked($name, $this->globalPath));
+        self::assertTrue($this->isFileMarked($name, $this->globalPath));
 
         $array = include $this->globalPath;
 
-        $this->assertSame(['global'], $array['Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables2']);
+        self::assertSame(['global'], $array['Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables2']);
     }
 
     public function testUnconfigure(): void
@@ -232,11 +227,11 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        $this->assertTrue($this->isFileMarked($name, $this->globalPath));
+        self::assertTrue($this->isFileMarked($name, $this->globalPath));
 
         $array = include $this->globalPath;
 
-        $this->assertSame(['global'], $array['Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables']);
+        self::assertSame(['global'], $array['Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables']);
 
         $this->ioMock->shouldReceive('writeError')
             ->once()
@@ -244,11 +239,11 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
 
         $this->configurator->unconfigure($package);
 
-        $this->assertFalse($this->isFileMarked($name, $this->globalPath));
+        self::assertFalse($this->isFileMarked($name, $this->globalPath));
 
         $array = include $this->globalPath;
 
-        $this->assertCount(0, $array);
+        self::assertCount(0, $array);
     }
 
     public function testUnconfigureWithTwoTypes(): void
@@ -289,11 +284,11 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        $this->assertTrue($this->isFileMarked($name, $this->globalPath));
+        self::assertTrue($this->isFileMarked($name, $this->globalPath));
 
         $array = include $this->globalPath;
 
-        $this->assertSame(['console', 'http'], $array['Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables']);
+        self::assertSame(['console', 'http'], $array['Viserio\\Component\\Foundation\\Bootstrap\\LoadEnvironmentVariables']);
 
         $this->ioMock->shouldReceive('writeError')
             ->once()
@@ -301,11 +296,11 @@ final class BootstrapConfiguratorTest extends MockeryTestCase
 
         $this->configurator->unconfigure($package);
 
-        $this->assertFalse($this->isFileMarked($name, $this->globalPath));
+        self::assertFalse($this->isFileMarked($name, $this->globalPath));
 
         $array = include $this->globalPath;
 
-        $this->assertCount(1, $array);
+        self::assertCount(1, $array);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Narrowspark\Automatic\Common\Test;
 
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
@@ -8,6 +10,8 @@ use Narrowspark\TestingHelper\Phpunit\MockeryTestCase;
 
 /**
  * @internal
+ *
+ * @small
  */
 final class GetSortedClassesTraitTest extends MockeryTestCase
 {
@@ -20,16 +24,16 @@ final class GetSortedClassesTraitTest extends MockeryTestCase
             ->once()
             ->with('configurators', 'providers')
             ->andReturn([
-                self::class         => ['global'],
+                self::class => ['global'],
                 Configurator::class => ['global', 'test'],
             ]);
 
         $array = $this->getSortedClasses($package, 'providers');
 
-        $this->assertEquals(
+        self::assertEquals(
             [
                 'global' => [
-                    self::class . '::class'         => '\\' . self::class . '::class',
+                    self::class . '::class' => '\\' . self::class . '::class',
                     Configurator::class . '::class' => '\\' . Configurator::class . '::class',
                 ],
                 'test' => [
