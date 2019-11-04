@@ -7,8 +7,6 @@ clone_folder: C:\projects\configurators
 
 environment:
   matrix:
-    - dependencies: basic
-      PHP_VERSION: 7.3
     - dependencies: high
       PHP_VERSION: 7.3
     - dependencies: lowest
