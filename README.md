@@ -1,7 +1,7 @@
 <h2 align="center">Automatic Narrowspark Framework Configurators</h2>
 <p align="center">
     <a href="https://github.com/narrowspark/configurators/releases"><img src="https://img.shields.io/packagist/v/narrowspark/configurators.svg?style=flat-square"></a>
-    <a href="https://php.net/"><img src="https://img.shields.io/badge/php-%5E7.2.0-8892BF.svg?style=flat-square"></a>
+    <a href="https://php.net/"><img src="https://img.shields.io/badge/php-%5E7.3.0-8892BF.svg?style=flat-square"></a>
     <a href="https://travis-ci.org/narrowspark/configurators"><img src="https://img.shields.io/travis/rust-lang/rust/master.svg?style=flat-square"></a>
     <a href="https://codecov.io/gh/narrowspark/configurators"><img src="https://img.shields.io/codecov/c/github/narrowspark/configurators/master.svg?style=flat-square"></a>
     <a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"></a>
