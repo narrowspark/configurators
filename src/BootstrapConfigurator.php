@@ -1,10 +1,21 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Narrowspark\Automatic\Configurator;
 
 use Composer\IO\IOInterface;
 use Narrowspark\Automatic\Common\Contract\Configurator as ConfiguratorContract;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
+use function array_values;
+use function count;
+use function file_exists;
+use function file_get_contents;
+use function implode;
+use function ltrim;
+use function sprintf;
+use function strpos;
+use function unlink;
 
 final class BootstrapConfigurator extends AbstractClassConfigurator
 {
@@ -37,19 +48,19 @@ final class BootstrapConfigurator extends AbstractClassConfigurator
         array $classes,
         string $env
     ): string {
-        if (\file_exists($filePath)) {
-            $content = (string) \file_get_contents($filePath);
+        if (file_exists($filePath)) {
+            $content = (string) file_get_contents($filePath);
 
-            \unlink($filePath);
+            unlink($filePath);
         } else {
-            $content = '<?php' . \PHP_EOL . 'declare(strict_types=1);' . \PHP_EOL . \PHP_EOL . 'return [' . \PHP_EOL . '];' . \PHP_EOL;
+            $content = '<?php' . "\n\n" . 'declare(strict_types=1);' . "\n\n" . 'return [' . "\n" . '];' . "\n";
         }
 
-        if (\count($classes) !== 0) {
+        if (count($classes) !== 0) {
             $content = $this->doInsertStringBeforePosition(
                 $content,
                 $this->buildClassNamesContent($package, $classes),
-                (int) \mb_strpos($content, '];')
+                (int) strpos($content, '];')
             );
         }
 
@@ -64,8 +75,8 @@ final class BootstrapConfigurator extends AbstractClassConfigurator
         $sortedClasses = [];
 
         foreach ((array) $package->getConfig(ConfiguratorContract::TYPE, self::getName()) as $class => $values) {
-            $class = \mb_strpos($class, '::class') !== false ? $class : $class . '::class';
-            $class = '\\' . \ltrim((string) $class, '\\');
+            $class = strpos($class, '::class') !== false ? $class : $class . '::class';
+            $class = '\\' . ltrim((string) $class, '\\');
 
             $sortedClasses['global'][$class] = (array) $values;
         }
@@ -84,13 +95,13 @@ final class BootstrapConfigurator extends AbstractClassConfigurator
     private function buildClassNamesContent(PackageContract $package, array $classes): string
     {
         $content = '';
-        $types   = \array_values($classes);
+        $types = array_values($classes);
 
         foreach ($classes as $class => $data) {
-            $content .= '    ' . $class . ' => [\'' . \implode('\', \'', $data) . "']," . \PHP_EOL;
+            $content .= '    ' . $class . ' => [\'' . implode('\', \'', $data) . "'],\n";
 
             $this->io->writeError(
-                \sprintf('      - Enabling [%s] as [\'%s\'] bootstrapper', $class, \implode('\', \'', $types[0])),
+                sprintf('      - Enabling [%s] as [\'%s\'] bootstrapper', $class, implode('\', \'', $types[0])),
                 true,
                 IOInterface::VERY_VERBOSE
             );

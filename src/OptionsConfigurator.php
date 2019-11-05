@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Narrowspark\Automatic\Configurator;
 
 use Composer\IO\IOInterface;
@@ -7,6 +9,24 @@ use Narrowspark\Automatic\Common\Configurator\AbstractConfigurator;
 use Narrowspark\Automatic\Common\Contract\Configurator as ConfiguratorContract;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 use Narrowspark\Automatic\Configurator\Traits\DumpTrait;
+use const DIRECTORY_SEPARATOR;
+use function array_keys;
+use function class_exists;
+use function count;
+use function end;
+use function explode;
+use function gettype;
+use function implode;
+use function interface_exists;
+use function is_int;
+use function is_string;
+use function ltrim;
+use function sprintf;
+use function str_repeat;
+use function str_replace;
+use function strpos;
+use function strtolower;
+use function var_export;
 
 final class OptionsConfigurator extends AbstractConfigurator
 {
@@ -29,15 +49,15 @@ final class OptionsConfigurator extends AbstractConfigurator
 
         $options = (array) $package->getConfig(ConfiguratorContract::TYPE, self::getName());
 
-        if (\count($options) === 0) {
+        if (count($options) === 0) {
             $this->io->writeError('      - No configuration was found', true, IOInterface::VERY_VERBOSE);
 
             return;
         }
 
-        foreach (\array_keys($options) as $env) {
-            $content = '<?php' . \PHP_EOL . 'declare(strict_types=1);' . \PHP_EOL . \PHP_EOL . 'return ';
-            $content .= $this->print($options[$env]) . ';' . \PHP_EOL;
+        foreach (array_keys($options) as $env) {
+            $content = '<?php' . "\n\n" . 'declare(strict_types=1);' . "\n\n" . 'return ';
+            $content .= $this->print($options[$env]) . ';' . "\n";
 
             $this->dump(
                 $this->getConfigFilePath($package, $env),
@@ -55,7 +75,7 @@ final class OptionsConfigurator extends AbstractConfigurator
 
         $options = (array) $package->getConfig(ConfiguratorContract::TYPE, self::getName());
 
-        foreach (\array_keys($options) as $env) {
+        foreach (array_keys($options) as $env) {
             $this->filesystem->remove($this->getConfigFilePath($package, $env));
         }
     }
@@ -70,32 +90,32 @@ final class OptionsConfigurator extends AbstractConfigurator
      */
     private function print(array $data, int $indentLevel = 1): string
     {
-        $indent  = \str_repeat(' ', $indentLevel * 4);
+        $indent = str_repeat(' ', $indentLevel * 4);
         $entries = [];
 
         foreach ($data as $key => $value) {
-            if (! \is_int($key)) {
+            if (! is_int($key)) {
                 if ($this->isClass($key)) {
-                    $class = \str_replace('\\\\', '\\', $key);
-                    $class = \sprintf('%s::class', $class);
+                    $class = str_replace('\\\\', '\\', $key);
+                    $class = sprintf('%s::class', $class);
 
-                    $key = \mb_strpos($class, '\\') === 0 ? $class : '\\' . $class;
+                    $key = strpos($class, '\\') === 0 ? $class : '\\' . $class;
                 } else {
-                    $key = \sprintf("'%s'", $key);
+                    $key = sprintf("'%s'", $key);
                 }
             }
 
-            $entries[] = \sprintf(
+            $entries[] = sprintf(
                 '%s%s%s,',
                 $indent,
-                \sprintf('%s => ', $key),
+                sprintf('%s => ', $key),
                 $this->createValue($value, $indentLevel)
             );
         }
 
-        $outerIndent = \str_repeat(' ', ($indentLevel - 1) * 4);
+        $outerIndent = str_repeat(' ', ($indentLevel - 1) * 4);
 
-        return \sprintf('[' . \PHP_EOL . '%s' . \PHP_EOL . '%s]', \implode(\PHP_EOL, $entries), $outerIndent);
+        return sprintf('[' . "\n" . '%s' . "\n" . '%s]', implode("\n", $entries), $outerIndent);
     }
 
     /**
@@ -108,20 +128,20 @@ final class OptionsConfigurator extends AbstractConfigurator
      */
     private function createValue($value, int $indentLevel): string
     {
-        $type = \gettype($value);
+        $type = gettype($value);
 
         if ($type === 'array') {
             return $this->print($value, $indentLevel + 1);
         }
 
         if ($this->isClass($value)) {
-            $class = \str_replace('\\\\', '\\', $value);
-            $class = \sprintf('%s::class', $class);
+            $class = str_replace('\\\\', '\\', $value);
+            $class = sprintf('%s::class', $class);
 
-            return \mb_strpos($class, '\\') === 0 ? $class : '\\' . $class;
+            return strpos($class, '\\') === 0 ? $class : '\\' . $class;
         }
 
-        return \var_export($value, true);
+        return var_export($value, true);
     }
 
     /**
@@ -133,14 +153,14 @@ final class OptionsConfigurator extends AbstractConfigurator
      */
     private function isClass($key): bool
     {
-        if (! \is_string($key)) {
+        if (! is_string($key)) {
             return false;
         }
 
-        $key       = \ltrim($key, '\\');
-        $firstChar = \mb_substr($key, 0, 1);
+        $key = ltrim($key, '\\');
+        $firstChar = $key[0];
 
-        return (\class_exists($key) || \interface_exists($key)) && \mb_strtolower($firstChar) !== $firstChar;
+        return (class_exists($key) || interface_exists($key)) && strtolower($firstChar) !== $firstChar;
     }
 
     /**
@@ -151,9 +171,9 @@ final class OptionsConfigurator extends AbstractConfigurator
      */
     private function getConfigFilePath(PackageContract $package, string $env): string
     {
-        $explode   = \explode('/', $package->getName());
-        $envFolder = $env === 'global' ? '' : $env . \DIRECTORY_SEPARATOR;
+        $explode = explode('/', $package->getName());
+        $envFolder = $env === 'global' ? '' : $env . DIRECTORY_SEPARATOR;
 
-        return self::expandTargetDir($this->options, '%CONFIG_DIR%' . \DIRECTORY_SEPARATOR . 'packages' . \DIRECTORY_SEPARATOR . $envFolder . \end($explode) . '.php');
+        return self::expandTargetDir($this->options, '%CONFIG_DIR%' . DIRECTORY_SEPARATOR . 'packages' . DIRECTORY_SEPARATOR . $envFolder . end($explode) . '.php');
     }
 }

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Narrowspark\Automatic\Test\Configurator;
 
 use Composer\Composer;
@@ -8,37 +10,32 @@ use Narrowspark\Automatic\Common\Package;
 use Narrowspark\Automatic\Common\Traits\PhpFileMarkerTrait;
 use Narrowspark\Automatic\Configurator\ServiceProviderConfigurator;
 use Narrowspark\TestingHelper\Phpunit\MockeryTestCase;
+use function dirname;
+use function rmdir;
+use function unlink;
 
 /**
  * @internal
+ *
+ * @small
  */
 final class ServiceProviderConfiguratorTest extends MockeryTestCase
 {
     use PhpFileMarkerTrait;
 
-    /**
-     * @var \Composer\Composer
-     */
+    /** @var \Composer\Composer */
     private $composer;
 
-    /**
-     * @var \Composer\IO\IOInterface|\Mockery\MockInterface
-     */
+    /** @var \Composer\IO\IOInterface|\Mockery\MockInterface */
     private $ioMock;
 
-    /**
-     * @var \Narrowspark\Automatic\Configurator\ServiceProviderConfigurator
-     */
+    /** @var \Narrowspark\Automatic\Configurator\ServiceProviderConfigurator */
     private $configurator;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $globalPath;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $localPath;
 
     /**
@@ -49,12 +46,12 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
         parent::setUp();
 
         $this->composer = new Composer();
-        $this->ioMock   = $this->mock(IOInterface::class);
+        $this->ioMock = $this->mock(IOInterface::class);
 
         $dir = __DIR__ . '/ServiceProviderConfiguratorTest';
 
         $this->globalPath = $dir . '/serviceproviders.php';
-        $this->localPath  = $dir . '/local/serviceproviders.php';
+        $this->localPath = $dir . '/local/serviceproviders.php';
 
         $this->configurator = new ServiceProviderConfigurator($this->composer, $this->ioMock, ['config-dir' => $dir]);
     }
@@ -66,15 +63,15 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
     {
         parent::tearDown();
 
-        @\unlink($this->globalPath);
-        @\unlink($this->localPath);
-        @\rmdir(\dirname($this->localPath));
-        @\rmdir(__DIR__ . '/ServiceProviderConfiguratorTest');
+        @unlink($this->globalPath);
+        @unlink($this->localPath);
+        @rmdir(dirname($this->localPath));
+        @rmdir(__DIR__ . '/ServiceProviderConfiguratorTest');
     }
 
     public function testGetName(): void
     {
-        $this->assertSame('providers', ServiceProviderConfigurator::getName());
+        self::assertSame('providers', ServiceProviderConfigurator::getName());
     }
 
     public function testConfigureWithGlobalProvider(): void
@@ -97,11 +94,11 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        $this->assertTrue($this->isFileMarked('test', $this->globalPath));
+        self::assertTrue($this->isFileMarked('test', $this->globalPath));
 
         $array = include $this->globalPath;
 
-        $this->assertSame(self::class, $array[0]);
+        self::assertSame(self::class, $array[0]);
     }
 
     public function testConfigureWithGlobalAndLocalProvider(): void
@@ -127,16 +124,16 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        $this->assertTrue($this->isFileMarked('test', $this->globalPath));
-        $this->assertTrue($this->isFileMarked('test', $this->localPath));
+        self::assertTrue($this->isFileMarked('test', $this->globalPath));
+        self::assertTrue($this->isFileMarked('test', $this->localPath));
 
         $array = include $this->globalPath;
 
-        $this->assertSame(self::class, $array[0]);
+        self::assertSame(self::class, $array[0]);
 
         $array = include $this->localPath;
 
-        $this->assertSame(self::class, $array[0]);
+        self::assertSame(self::class, $array[0]);
     }
 
     public function testSkipMarkedFiles(): void
@@ -161,11 +158,11 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        $this->assertSame(self::class, $array[0]);
+        self::assertSame(self::class, $array[0]);
 
         $this->configurator->configure($package);
 
-        $this->assertFalse(isset($array[1]));
+        self::assertFalse(isset($array[1]));
     }
 
     public function testUpdateAExistedFileWithGlobalProvider(): void
@@ -190,7 +187,7 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        $this->assertSame(self::class, $array[0]);
+        self::assertSame(self::class, $array[0]);
 
         $package = new Package('test2', '^1.0.0');
         $package->setConfig([
@@ -212,8 +209,8 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        $this->assertSame(self::class, $array[0]);
-        $this->assertSame(Package::class, $array[1]);
+        self::assertSame(self::class, $array[0]);
+        self::assertSame(Package::class, $array[1]);
     }
 
     public function testUpdateAExistedFileWithGlobalAndLocalProvider(): void
@@ -241,11 +238,11 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        $this->assertSame(self::class, $array[0]);
+        self::assertSame(self::class, $array[0]);
 
         $array = include $this->localPath;
 
-        $this->assertSame(self::class, $array[0]);
+        self::assertSame(self::class, $array[0]);
 
         $package = new Package('test2', '^1.0.0');
         $package->setConfig([
@@ -270,13 +267,13 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        $this->assertSame(self::class, $array[0]);
-        $this->assertSame(Package::class, $array[1]);
+        self::assertSame(self::class, $array[0]);
+        self::assertSame(Package::class, $array[1]);
 
         $array = include $this->localPath;
 
-        $this->assertSame(self::class, $array[0]);
-        $this->assertSame(Package::class, $array[1]);
+        self::assertSame(self::class, $array[0]);
+        self::assertSame(Package::class, $array[1]);
     }
 
     public function testConfigureWithEmptyProvidersConfig(): void
@@ -298,53 +295,12 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $this->configurator->configure($package);
 
-        $this->assertFileNotExists($this->globalPath);
+        self::assertFileNotExists($this->globalPath);
     }
 
     /**
      * @FIXME Find a good way to remove providers from other required packages
      */
-//    public function testConfigureRemoveAProviderFromAOtherPackageOnlyIfPackageIsRequired(): void
-//    {
-//        $package = new Package(
-//            'test',
-//            __DIR__,
-//            [
-//                'version'   => '1',
-//                'requires'  => [],
-//                'providers' => [
-//                    self::class => ['global']
-//                ],
-//            ]
-//        );
-//
-//        $this->configurator->configure($package);
-//
-//        $package = new Package(
-//            'test2',
-//            __DIR__,
-//            [
-//                'version'  => '1',
-//                'requires' => [
-//                    'test',
-//                ],
-//                'providers' => [
-//                    Package::class => ['global'],
-//                    'remove' => [
-//                        self::class => ['global'],
-//                    ],
-//                ],
-//            ]
-//        );
-//
-//        $this->configurator->configure($package);
-//
-//        $array = include $this->globalPath;
-//
-//        self::assertSame(Package::class, $array[0]);
-//        self::assertFalse(isset($array[1]));
-//    }
-
     public function testUnconfigureWithGlobalProviders(): void
     {
         $package = new Package('test', '^1.0.0');
@@ -391,8 +347,8 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        $this->assertSame(Package::class, $array[0]);
-        $this->assertFalse(isset($array[1]));
+        self::assertSame(Package::class, $array[0]);
+        self::assertFalse(isset($array[1]));
     }
 
     public function testUnconfigureAndConfigureAgain(): void
@@ -401,7 +357,7 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
         $package->setConfig([
             'configurators' => [
                 'providers' => [
-                    self::class    => ['global'],
+                    self::class => ['global'],
                     Package::class => ['local'],
                 ],
             ],
@@ -429,7 +385,7 @@ final class ServiceProviderConfiguratorTest extends MockeryTestCase
 
         $array = include $this->globalPath;
 
-        $this->assertFalse(isset($array[0], $array[1]));
+        self::assertFalse(isset($array[0], $array[1]));
     }
 
     /**

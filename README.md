@@ -17,28 +17,7 @@ composer require narrowspark/automatic narrowspark/configurators
 Configurators
 -------------
 There are several types of tasks, which are called **configurators**:
-`proxies`, `options`, `bootstrap` and `providers`.
-
-`proxies` Configurator
-
-Adds new proxies in the `staticalproxy.php` file by adding your
-classes in the `proxies` option.
-
-This example creates a new `Route` static proxy:
-
-```json
-{   
-    "extra": {
-        "automatic": {
-            "proxies": {
-                "Viserio\\Component\\Routing\\Proxy\\Route": [
-                    "global"
-                ]
-            }
-        }
-    }
-}
-```
+`options`, `bootstrap` and `providers`.
 
 `providers` Configurator
 

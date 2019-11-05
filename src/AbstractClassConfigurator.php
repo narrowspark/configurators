@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Narrowspark\Automatic\Configurator;
 
 use Composer\IO\IOInterface;
@@ -7,6 +9,14 @@ use Narrowspark\Automatic\Common\Configurator\AbstractConfigurator;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 use Narrowspark\Automatic\Common\Traits\PhpFileMarkerTrait;
 use Narrowspark\Automatic\Configurator\Traits\DumpTrait;
+use const DIRECTORY_SEPARATOR;
+use function array_keys;
+use function count;
+use function file_get_contents;
+use function preg_replace;
+use function sprintf;
+use function str_repeat;
+use function unlink;
 
 /**
  * @internal
@@ -68,7 +78,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
 
         $sortedClasses = $this->getSortedClasses($package, static::$optionName);
 
-        if (\count($sortedClasses) === 0) {
+        if (count($sortedClasses) === 0) {
             $this->io->writeError('      - No configuration was found', true, IOInterface::VERY_VERBOSE);
 
             return;
@@ -97,11 +107,11 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
 
         $sortedClasses = $this->getSortedClasses($package, static::$optionName);
 
-        if (\count($sortedClasses) === 0) {
+        if (count($sortedClasses) === 0) {
             return;
         }
 
-        $envs = \array_keys($sortedClasses);
+        $envs = array_keys($sortedClasses);
 
         /** @param string[] $contents */
         $contents = [];
@@ -113,9 +123,9 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
                 continue;
             }
 
-            $contents[$env] = (string) \file_get_contents($filePath);
+            $contents[$env] = (string) file_get_contents($filePath);
 
-            \unlink($filePath);
+            unlink($filePath);
         }
 
         foreach ($sortedClasses as $env => $data) {
@@ -140,9 +150,9 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
      */
     protected function getConfFile(string $type): string
     {
-        $type = $type === 'global' ? '' : $type . \DIRECTORY_SEPARATOR;
+        $type = $type === 'global' ? '' : $type . DIRECTORY_SEPARATOR;
 
-        return self::expandTargetDir($this->options, '%CONFIG_DIR%' . \DIRECTORY_SEPARATOR . $type . static::$configFileName . '.php');
+        return self::expandTargetDir($this->options, '%CONFIG_DIR%' . DIRECTORY_SEPARATOR . $type . static::$configFileName . '.php');
     }
 
     /**
@@ -172,11 +182,11 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
      */
     protected function replaceContent(string $content, PackageContract $package): string
     {
-        $count  = 0;
-        $spaces = \str_repeat(' ', static::$spaceMultiplication);
+        $count = 0;
+        $spaces = str_repeat(' ', static::$spaceMultiplication);
 
-        $replacedContent = \preg_replace(
-            \sprintf('{%s/\*\* > %s \*\*\/.*%s\/\*\* %s < \*\*\/%s}s', $spaces, $package->getPrettyName(), $spaces, $package->getPrettyName(), \PHP_EOL),
+        $replacedContent = preg_replace(
+            sprintf('{%s/\*\* > %s \*\*\/.*%s\/\*\* %s < \*\*\/%s}s', $spaces, $package->getPrettyName(), $spaces, $package->getPrettyName(), "\n"),
             '',
             $content,
             -1,
