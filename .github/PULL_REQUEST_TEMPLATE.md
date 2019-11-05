@@ -1,12 +1,12 @@
 | Q             | A
 | ------------- | ---
 | Branch?       | master <!-- for features -->
-| Bug fix?      | [ ]
-| New feature?  | [ ]
-| Deprecations? | [ ] <!-- don't forget to update UPGRADE-*.md files -->
+| Bug fix?      | yes/no
+| New feature?  | yes/no
+| Deprecations? | yes/no <!-- don't forget to update UPGRADE-*.md files -->
 | Tickets       | Fix #...   <!-- prefix each issue number with "Fix #", if any -->
 | License       | MIT
-| Doc PR        | [ ] <!--highly recommended for new features-->
+| Doc PR        | yes/no <!--highly recommended for new features-->
 
 <!--
 Replace this notice by a short README for your feature/bugfix. This will help people
