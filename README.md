@@ -126,6 +126,12 @@ If you would like to help take a look at the [list of issues](https://github.com
 
 > **Note:** please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
 
+Credits
+-------------
+
+- [Daniel Bannert](https://github.com/prisis)
+- [All Contributors](https://github.com/narrowspark/automatic/graphs/contributors)
+
 License
 ---------------
 
