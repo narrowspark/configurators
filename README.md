@@ -16,13 +16,13 @@ composer require narrowspark/automatic narrowspark/configurators
 
 Configurators
 -------------
-There are several types of tasks, which are called **configurators**:
+There are several types of tasks, which are called **configurators:**
 `options`, `bootstrap` and `providers`.
 
 `providers` Configurator
 
-Enables one or more service provider in the Narrowspark application by appending them to the `serviceproviders.php` file.
-Its value is an associative array where the key is the service provider class name and the value is an array of environments where it must be enabled.
+Turns on one or more service provider in the Narrowspark app by appending them to the `serviceproviders.php` file.
+Its value is an associative array where the key is the service provider class name and the value is an array of environments where it must be used.
 The supported environments are `local`, `prod`, `testing` and `global` (which enables the `service provider` in all environments):
 
 ```json
@@ -64,11 +64,11 @@ return [
 
 Adds new config files to the `config` folder provided from your root composer.json `config-dir` name.
 
-> NOTE: The package name is taken to generate the file name.
+> **Note:** the package name is taken to generate the file name.
 
 This example creates a new `view` config file in the `packages` folder and `packages/test` folder:
 
-> NOTE: The first array key is taken as environment key, like `global` or `test` in this example.
+> **Note:** the first array key is taken as environment key, like `global` or `test` in this example.
 
 ```json
 {   
@@ -100,12 +100,12 @@ This example creates a new `view` config file in the `packages` folder and `pack
 `bootstrap` Configurator
 
 This example creates new `bootstrap` configs for the `console` and `http` kernel:
-You can choose between `http`, `console` and `global` type to configure your kernel bootstraps, 
+you can choose between `http`, `console` and `global` type to configure your kernel bootstraps, 
 with the possibility to configure bootstraps for your chosen environment.
 
-> NOTE: Generates a new `bootstrap.php` file to the `config` folder provided from your root composer.json `config-dir` name, if the file doesn't exists.
+> **Note:** generates a new `bootstrap.php` file to the `config` folder provided from your root composer.json `config-dir` name, if the file doesn’t exists.
 
-> NOTE: The `global` type will configure both kernels.
+> **Note:** the `global` type will configure both kernels.
 
 ```json
 {   
@@ -122,13 +122,13 @@ with the possibility to configure bootstraps for your chosen environment.
 Contributing
 ------------
 
-If you would like to help take a look at the [list of issues](http://github.com/narrowspark/configurators/issues) and check our [Contributing](CONTRIBUTING.md) guild.
+If you would like to help take a look at the [list of issues](https://github.com/narrowspark/configurators/issues) and check our [Contributing](CONTRIBUTING.md) guild.
 
-> **Note:** Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
+> **Note:** please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
 
 License
 ---------------
 
-The Narrowspark configurators is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+The Narrowspark configurators is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT)
 
 [1]: http://github.com/jshttp/mime-db
