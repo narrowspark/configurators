@@ -22,7 +22,7 @@
     },
     "require-dev": {
         "composer/composer": "^1.6.0 || ^1.7.1 || ^1.8.0 || ^1.9.0",
-        "mockery/mockery": "^1.2.0",
+        "mockery/mockery": "^1.2.4",
         "narrowspark/automatic-common": "dev-master",
         "narrowspark/coding-standard": "^3.2.0",
         "narrowspark/testing-helper": "^8.0.2",
