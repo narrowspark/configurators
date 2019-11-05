@@ -14,7 +14,8 @@ understand your PR and can be used as a start for the documentation.
 
 Additionally:
  - Always add tests and ensure they pass.
- - Never break backward compatibility
+ - Update or add documentation if there a missing.
+ - Never break backward compatibility.
  - Bug fixes must be submitted against the lowest branch where they apply
    (lowest branches are regularly merged to upper ones so they get the fixes too).
  - Features and deprecations must be submitted against the branch "master".
