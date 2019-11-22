@@ -9,13 +9,11 @@ use Narrowspark\Automatic\Common\Contract\Configurator as ConfiguratorContract;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 use function array_values;
 use function count;
-use function file_exists;
 use function file_get_contents;
 use function implode;
 use function ltrim;
 use function sprintf;
 use function strpos;
-use function unlink;
 
 final class BootstrapConfigurator extends AbstractClassConfigurator
 {
@@ -48,10 +46,10 @@ final class BootstrapConfigurator extends AbstractClassConfigurator
         array $classes,
         string $env
     ): string {
-        if (file_exists($filePath)) {
+        if ($this->filesystem->exists($filePath)) {
             $content = (string) file_get_contents($filePath);
 
-            unlink($filePath);
+            $this->filesystem->remove($filePath);
         } else {
             $content = '<?php' . "\n\n" . 'declare(strict_types=1);' . "\n\n" . 'return [' . "\n" . '];' . "\n";
         }
@@ -88,7 +86,7 @@ final class BootstrapConfigurator extends AbstractClassConfigurator
      * Builds a array value with class names.
      *
      * @param \Narrowspark\Automatic\Common\Contract\Package $package
-     * @param array                                          $classes
+     * @param array<string, array>                           $classes
      *
      * @return string
      */

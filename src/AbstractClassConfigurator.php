@@ -16,7 +16,6 @@ use function file_get_contents;
 use function preg_replace;
 use function sprintf;
 use function str_repeat;
-use function unlink;
 
 /**
  * @internal
@@ -125,7 +124,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
 
             $contents[$env] = (string) file_get_contents($filePath);
 
-            unlink($filePath);
+            $this->filesystem->remove($filePath);
         }
 
         foreach ($sortedClasses as $env => $data) {
@@ -137,7 +136,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
         }
 
         foreach ($contents as $key => $content) {
-            $this->dump($this->getConfFile((string) $key), $content);
+            $this->dump($this->getConfFile($key), $content);
         }
     }
 
@@ -160,7 +159,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
      *
      * @param \Narrowspark\Automatic\Common\Contract\Package $package
      * @param string                                         $filePath
-     * @param array                                          $classes
+     * @param array<string, array<string, array|string>>     $classes
      * @param string                                         $env
      *
      * @return string
@@ -206,7 +205,7 @@ abstract class AbstractClassConfigurator extends AbstractConfigurator
      * @param \Narrowspark\Automatic\Common\Contract\Package $package
      * @param string                                         $key
      *
-     * @return array
+     * @return array<string, array<string, array|string>>
      */
     abstract protected function getSortedClasses(PackageContract $package, string $key): array;
 }

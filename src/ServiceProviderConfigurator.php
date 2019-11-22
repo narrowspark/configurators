@@ -8,11 +8,9 @@ use Composer\IO\IOInterface;
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 use Narrowspark\Automatic\Configurator\Traits\GetSortedClassesTrait;
 use function count;
-use function file_exists;
 use function file_get_contents;
 use function sprintf;
 use function strpos;
-use function unlink;
 
 final class ServiceProviderConfigurator extends AbstractClassConfigurator
 {
@@ -47,10 +45,10 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
         array $classes,
         string $type
     ): string {
-        if (file_exists($filePath)) {
+        if ($this->filesystem->exists($filePath)) {
             $content = (string) file_get_contents($filePath);
 
-            unlink($filePath);
+            $this->filesystem->remove($filePath);
         } else {
             $content = '<?php' . "\n\n" . 'declare(strict_types=1);' . "\n\n" . 'return [' . "\n" . '];' . "\n";
         }
@@ -70,7 +68,7 @@ final class ServiceProviderConfigurator extends AbstractClassConfigurator
      * Builds a array value with class names.
      *
      * @param \Narrowspark\Automatic\Common\Contract\Package $package
-     * @param array                                          $classes
+     * @param string[]                                       $classes
      * @param string                                         $type
      *
      * @return string
