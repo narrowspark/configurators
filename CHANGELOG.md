@@ -1,3 +1,31 @@
+v0.8.0
+======
+
+- Total issues resolved: **4**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
+
+Added
+-----
+
+ - [6: Add issue template](https://github.com/narrowspark/configurators/issues/6) thanks to @prisis
+
+Changed
+-------
+
+ - [33: applying new coding standard](https://github.com/narrowspark/configurators/issues/33) thanks to @prisis
+
+Removed
+-------
+
+ - [32: removed proxy configurator](https://github.com/narrowspark/configurators/issues/32) thanks to @prisis
+
+Fixed
+-----
+
+ - [29: fix : fixed wrong php version in phpstan workflow](https://github.com/narrowspark/configurators/pull/29) thanks to @prisis
+ - [31: fix phpstan errors](https://github.com/narrowspark/configurators/issues/31) thanks to @prisis
+
 v0.7.0
 ======
 
