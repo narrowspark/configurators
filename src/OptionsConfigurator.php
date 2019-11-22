@@ -60,7 +60,7 @@ final class OptionsConfigurator extends AbstractConfigurator
             $content .= $this->print($options[$env]) . ';' . "\n";
 
             $this->dump(
-                $this->getConfigFilePath($package, $env),
+                $this->getConfigFilePath($package, (string) $env),
                 $content
             );
         }
@@ -83,8 +83,8 @@ final class OptionsConfigurator extends AbstractConfigurator
     /**
      * Returns a pretty php array for saving or output.
      *
-     * @param array $data
-     * @param int   $indentLevel
+     * @param array<int | string, string> $data
+     * @param int                         $indentLevel
      *
      * @return string
      */

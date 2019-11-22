@@ -17,7 +17,7 @@ trait GetSortedClassesTrait
      * @param \Narrowspark\Automatic\Common\Contract\Package $package
      * @param string                                         $key
      *
-     * @return array
+     * @return array<string, array<string, string>>
      */
     protected function getSortedClasses(PackageContract $package, string $key): array
     {
