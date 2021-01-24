@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Narrowspark\Automatic\Common\Test;
+namespace Narrowspark\Automatic\Configurator\Tests\Traits;
 
 use Narrowspark\Automatic\Common\Contract\Package as PackageContract;
 use Narrowspark\Automatic\Configurator\Traits\GetSortedClassesTrait;
