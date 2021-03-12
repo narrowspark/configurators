@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Narrowspark\Automatic\Test\Configurator;
+namespace Narrowspark\Automatic\Configurator\Tests;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
